@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux基本命令及项目上线 | 萌萌的PP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一.Linux的常用命令date 查看日期 pwd  查看当前位置(当我们在命令界面操作时有必要适当看看当前目录,以免出错) cd   目录地址  目录切换 ls | ll  列表查看当前目录下文件与文件夹,ll为详细的信息 设置Linux的中文编码输入命令进入修改界面:  vi /etc/sysconfig/i18n 要修改的内容:  LANG=&amp;quot;zh_CN.GBK&amp;quot; 修改为">
+<meta name="keywords" content="linux基本命令,项目在linux上线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux基本命令及项目上线">
+<meta property="og:url" content="http://yoursite.com/2018/10/26/Linux基本命令及项目上线/index.html">
+<meta property="og:site_name" content="萌萌的PP">
+<meta property="og:description" content="一.Linux的常用命令date 查看日期 pwd  查看当前位置(当我们在命令界面操作时有必要适当看看当前目录,以免出错) cd   目录地址  目录切换 ls | ll  列表查看当前目录下文件与文件夹,ll为详细的信息 设置Linux的中文编码输入命令进入修改界面:  vi /etc/sysconfig/i18n 要修改的内容:  LANG=&amp;quot;zh_CN.GBK&amp;quot; 修改为">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181026184812150.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2018-10-26T11:21:59.051Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux基本命令及项目上线">
+<meta name="twitter:description" content="一.Linux的常用命令date 查看日期 pwd  查看当前位置(当我们在命令界面操作时有必要适当看看当前目录,以免出错) cd   目录地址  目录切换 ls | ll  列表查看当前目录下文件与文件夹,ll为详细的信息 设置Linux的中文编码输入命令进入修改界面:  vi /etc/sysconfig/i18n 要修改的内容:  LANG=&amp;quot;zh_CN.GBK&amp;quot; 修改为">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181026184812150.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70">
+  
+    <link rel="alternate" href="/atom.xml" title="萌萌的PP" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/plugin/bganimation/bg.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <div class="widget-wrap mobile-header">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://avatars0.githubusercontent.com/u/20333903?v=3&amp;s=460">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>6</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>3</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>4</strong><br>标签</div></a>
+    </div>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+        <section id="main"><article id="post-Linux基本命令及项目上线" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/26/Linux基本命令及项目上线/" class="article-date">
+  <time class="post-time" datetime="2018-10-26T11:18:00.000Z" itemprop="datePublished">
+    <span class="post-month">10月</span><br/>
+    <span class="post-day">26</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux基本命令及项目上线
+    </h1>
+  
+
+        <div>
+          
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+          
+              
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="一-Linux的常用命令"><a href="#一-Linux的常用命令" class="headerlink" title="一.Linux的常用命令"></a>一.Linux的常用命令</h1><pre><code>date 查看日期
+pwd  查看当前位置(当我们在命令界面操作时有必要适当看看当前目录,以免出错)
+cd   目录地址  目录切换
+ls | ll  列表查看当前目录下文件与文件夹,ll为详细的信息
+</code></pre><h4 id="设置Linux的中文编码"><a href="#设置Linux的中文编码" class="headerlink" title="设置Linux的中文编码"></a>设置Linux的中文编码</h4><pre><code>输入命令进入修改界面:  vi /etc/sysconfig/i18n
+要修改的内容:  LANG=&quot;zh_CN.GBK&quot; 修改为LANG=&quot;zh_CN.UTF-8&quot; 
+保存退出:  shift+:
+刷新:  source /etc/sysconfig/i18n
+检查编码：  locale
+</code></pre><h4 id="文件夹-文件-基本操作"><a href="#文件夹-文件-基本操作" class="headerlink" title="文件夹 文件 基本操作"></a>文件夹 文件 基本操作</h4><pre><code> mkdir   目录名(可以跟多个目录名)   创建文件夹
+ rm -rf  目录(可以为多个)    删除文件夹
+mv      原始目录   修改后的目录   文件移动(可以进行重命名操作)
+</code></pre><h4 id="文件基本操作vim"><a href="#文件基本操作vim" class="headerlink" title="文件基本操作vim"></a>文件基本操作vim</h4><pre><code>vim    文件名   创建或者打开指定文件
+按一下 i键  进入编辑状态 在编辑状态下修改文件
+u      撤销上一步的操作
+Ctrl+r 恢复上一步被撤销的操作
+复制行  复制哪一行就把光标放在哪一行然后用命令y,就复制了，然后我再用p命令就可以把这行复制到光标下面
+快速查找   /+(你要查找的词),如: /name ,然后回车就行
+查找下一个  按n键
+按一下 esc 键 退出编辑  
+shift+: 键  输入 wq 然后按 enter 键 执行写入并退出的操作
+</code></pre><h4 id="文件copy"><a href="#文件copy" class="headerlink" title="文件copy"></a>文件copy</h4><pre><code>cp  源文件地址   目标文件目录地址  
+</code></pre><h4 id="文件夹copy"><a href="#文件夹copy" class="headerlink" title="文件夹copy"></a>文件夹copy</h4><pre><code>cp -r  源文件夹目录   目标文件夹目录  或  复制文件夹 cp -rf 要复制的目录 新目录  
+</code></pre><h4 id="进程问题"><a href="#进程问题" class="headerlink" title="进程问题"></a>进程问题</h4><ol>
+<li>查看进程 ps -ef|grep redis<br><a href="https://img-blog.csdnimg.cn/20181026124931828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" target="_blank" rel="noopener">https://img-blog.csdnimg.cn/20181026124931828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70</a></li>
+<li>杀死进程 kill -9 pid编号,pid编号为第一行的数字,可以一次清除多个进程,在后面写上多个pid就行<br><a href="https://img-blog.csdnimg.cn/20181026125247475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" target="_blank" rel="noopener">https://img-blog.csdnimg.cn/20181026125247475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70</a></li>
+</ol>
+<h4 id="解压文件"><a href="#解压文件" class="headerlink" title="解压文件"></a>解压文件</h4><pre><code>解压 tar -zvxf 压缩文件
+</code></pre><h4 id="info-replication-查看状态"><a href="#info-replication-查看状态" class="headerlink" title="info replication 查看状态"></a>info replication 查看状态</h4><p><a href="https://img-blog.csdnimg.cn/20181026125450249.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" target="_blank" rel="noopener">https://img-blog.csdnimg.cn/20181026125450249.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70</a></p>
+<h1 id="二-静态ip-配置步骤"><a href="#二-静态ip-配置步骤" class="headerlink" title="二.静态ip 配置步骤"></a>二.静态ip 配置步骤</h1><p>   1.启动时选择<strong>桥接模式</strong><br>   2.启动后修改网卡文件<br>     vi /etc/sysconfig/network-scripts/ifcfg-eth0 修改ip地址<br>        BOOTPROTO dbcp–&gt;static<br>        ipv6—&gt;no<br>      添加配置<br>          IPADDR=192.168.1.XXX<br>          NETMASK=255.255.255.0<br>          GATEWAY=192.168.1.1<br>          DNS1=192.168.1.1<br>          物理地址:HWaddr 00:0C:29:76:1E:8A</p>
+<h4 id="改完之后的如下"><a href="#改完之后的如下" class="headerlink" title="改完之后的如下:"></a>改完之后的如下:</h4><pre><code>DEVICE=&quot;eth0&quot;
+BOOTPROTO=&quot;static&quot;
+HWADDR=&quot;00:0C:29:76:1E:8A&quot;
+IPV6INIT=&quot;no&quot;
+NM_CONTROLLED=&quot;yes&quot;
+ONBOOT=&quot;yes&quot;
+TYPE=&quot;Ethernet&quot;
+UUID=&quot;b86d8bd9-98e9-4e64-b7bd-7c88951d32b3&quot;
+IPADDR=192.168.1.123
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1
+DNS1=192.168.1.1
+</code></pre><h4 id="保存并退出"><a href="#保存并退出" class="headerlink" title="保存并退出"></a>保存并退出</h4><pre><code>service network  restart 重启网络
+</code></pre><h4 id="执行测试"><a href="#执行测试" class="headerlink" title="执行测试"></a>执行测试</h4><pre><code>ping 192.168.1.1
+ping 192.168.1.xxx (windows ip)
+ping baodu.com
+</code></pre><h4 id="通过xshell-连接linux"><a href="#通过xshell-连接linux" class="headerlink" title="通过xshell 连接linux"></a>通过xshell 连接linux</h4><pre><code>新建会话
+   输入  linux ip  用户名 密码    
+</code></pre><h4 id="利用xshell实现Windows与Linux文件互传"><a href="#利用xshell实现Windows与Linux文件互传" class="headerlink" title="利用xshell实现Windows与Linux文件互传"></a>利用xshell实现Windows与Linux文件互传</h4><pre><code>   在Linux主机上，安装上传下载工具包rz及sz
+
+只需要安装这个包即可。
+
+[root@localhost src]#  yum install -y lrzs z
+</code></pre><h1 id="三-项目部署到Linux流程"><a href="#三-项目部署到Linux流程" class="headerlink" title="三.项目部署到Linux流程"></a>三.项目部署到Linux流程</h1><h2 id="1-安装jdk"><a href="#1-安装jdk" class="headerlink" title="1. 安装jdk"></a>1. 安装jdk</h2><pre><code>yum list|grep jdk   查找jdk 相关软件
+yum install  +版本号  安装指定版本jdk
+查看安装是否成功:  java -version
+</code></pre><h2 id="2-tomcat-部署"><a href="#2-tomcat-部署" class="headerlink" title="2.tomcat 部署"></a>2.tomcat 部署</h2><pre><code>wget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.tar.gz  执行下载
+进入bin目录操作:   cd  tomcat/bin
+service  iptables  status  查看防火墙状态
+service  iptables  stop   关闭防火墙
+在bin 目录下执行启动脚本     ./startup.sh
+外界浏览器进行访问     (例如:你的ip+端口号)192.168.1.186:8080   
+关闭tomcat     cd bin --&gt;   ./shutdown.sh   
+</code></pre><h5 id="查看Tomcat日志-建议xshell复制个连接查看"><a href="#查看Tomcat日志-建议xshell复制个连接查看" class="headerlink" title="查看Tomcat日志(建议xshell复制个连接查看)"></a>查看Tomcat日志(建议xshell复制个连接查看)</h5><pre><code> 首先进入Tomcat的logs目录:   cd tomcat   cd logs
+输入下面语句即可实现监听:    tail -f catalina.out  
+</code></pre><h2 id="3-项目Windows项目传到Linux"><a href="#3-项目Windows项目传到Linux" class="headerlink" title="3.项目Windows项目传到Linux"></a>3.项目Windows项目传到Linux</h2><h5 id="将项目打成-war"><a href="#将项目打成-war" class="headerlink" title="将项目打成 war"></a>将项目打成 war</h5><pre><code>打包环境 pom 配置
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  &lt;!--</span><br><span class="line">   打包标签配置</span><br><span class="line"> --&gt;</span><br><span class="line">&lt;profiles&gt;</span><br><span class="line">  &lt;profile&gt;</span><br><span class="line">    &lt;id&gt;dev&lt;/id&gt;</span><br><span class="line">    &lt;properties&gt;</span><br><span class="line">      &lt;env&gt;dev&lt;/env&gt;</span><br><span class="line">    &lt;/properties&gt;</span><br><span class="line">    &lt;activation&gt;</span><br><span class="line">      &lt;!--默认运行开发环境--&gt;</span><br><span class="line">      &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;</span><br><span class="line">    &lt;/activation&gt;</span><br><span class="line">  &lt;/profile&gt;</span><br><span class="line"></span><br><span class="line">  &lt;profile&gt;</span><br><span class="line">    &lt;id&gt;test&lt;/id&gt;</span><br><span class="line">    &lt;properties&gt;</span><br><span class="line">      &lt;env&gt;test&lt;/env&gt;</span><br><span class="line">    &lt;/properties&gt;</span><br><span class="line">  &lt;/profile&gt;</span><br><span class="line"></span><br><span class="line">  &lt;profile&gt;</span><br><span class="line">    &lt;id&gt;product&lt;/id&gt;</span><br><span class="line">    &lt;properties&gt;</span><br><span class="line">      &lt;env&gt;product&lt;/env&gt;</span><br><span class="line">    &lt;/properties&gt;</span><br><span class="line">  &lt;/profile&gt;</span><br><span class="line">&lt;/profiles&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--配置--&gt;</span><br><span class="line">&lt;build&gt;</span><br><span class="line">  &lt;finalName&gt;crm&lt;/finalName&gt;</span><br><span class="line">  &lt;resources&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">      &lt;directory&gt;src/main/resources/$&#123;env&#125;&lt;/directory&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">      &lt;directory&gt;src/main/java&lt;/directory&gt;</span><br><span class="line">      &lt;includes&gt;</span><br><span class="line">        &lt;include&gt;**/*.xml&lt;/include&gt;</span><br><span class="line">        &lt;include&gt;**/*.properties&lt;/include&gt;</span><br><span class="line">        &lt;include&gt;**/*.tld&lt;/include&gt;</span><br><span class="line">      &lt;/includes&gt;</span><br><span class="line">      &lt;filtering&gt;false&lt;/filtering&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">  &lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="对应的项目的目录-每个里面的就jdbc-properties不同-根据不同环境配置"><a href="#对应的项目的目录-每个里面的就jdbc-properties不同-根据不同环境配置" class="headerlink" title="对应的项目的目录:每个里面的就jdbc.properties不同,根据不同环境配置"></a>对应的项目的目录:每个里面的就jdbc.properties不同,根据不同环境配置</h5><p><img src="https://img-blog.csdnimg.cn/20181026184812150.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" alt=""></p>
+<h5 id="配置相应的打包命令"><a href="#配置相应的打包命令" class="headerlink" title="配置相应的打包命令"></a>配置相应的打包命令</h5><pre><code>打包命令(跳过 maven 测试)
+打开发环境包:  clean compile package -Pdev -Dmaven.test.skip=true
+打测试环境包:  clean compile package -Ptest -Dmaven.test.skip=true
+打正式环境包:  clean compile package -Pproduct -Dmaven.test.skip=true
+打包成功后在项目的target目录下会生成一个war包
+</code></pre><h2 id="4-将war包上传到Linux的Tomcat下的webapps目录"><a href="#4-将war包上传到Linux的Tomcat下的webapps目录" class="headerlink" title="4.将war包上传到Linux的Tomcat下的webapps目录"></a>4.将war包上传到Linux的Tomcat下的webapps目录</h2><pre><code>通过ftp 上传静态网站目录 到 tomcat--&gt;webapps 
+因为前面你已经安装了传输文件的插件,直接把你的war包用鼠标拖到xsheel里面就行啦!前题此时xsheel必须在Tomcat的WebApps目录下面
+</code></pre><h2 id="5-mysql的安装"><a href="#5-mysql的安装" class="headerlink" title="5.mysql的安装"></a>5.mysql的安装</h2><pre><code>mysql 安装与配置
+         查看mysql安装历史  rpm -qa | grep mysql
+         卸载  yum –y remove mysql(上面查到的自己mysql的版本名称)
+执行安装
+         yum -y install mysql-server mysql mysql-devel
+启动服务        
+      service mysqld start     启动
+      service mysqld stop      停止   
+      service mysqld resatrt   重启
+      ||
+      /etc/init.d/mysqld start|stop|restart
+创建管理员
+       mysqladmin -u root  password  root   (用户密码自己设置就行,这里都为root)
+执行登录
+       mysql -uroot  -proot
+执行授权
+       grant all privileges on *.* to &apos;root&apos;@&apos;%&apos; identified by &apos;root&apos; with grant option;
+       FLUSH   PRIVILEGES;  (刷新一下设置)
+外界访问 navicat | sqlyog (通过第三方连接测试)
+</code></pre><h2 id="6-1-5的步骤都成功了-启动Tomcat服务器就行啦"><a href="#6-1-5的步骤都成功了-启动Tomcat服务器就行啦" class="headerlink" title="6.1~5的步骤都成功了,启动Tomcat服务器就行啦!"></a>6.1~5的步骤都成功了,启动Tomcat服务器就行啦!</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/26/Linux基本命令及项目上线/" data-id="cjnpxg7wl00037ku7rsomy8y7" class="article-share-link">分享</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux基本命令/">linux基本命令</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/项目在linux上线/">项目在linux上线</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/10/24/Http详解/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Http详解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <h1 class="blog-title">萌萌的PP</h1>
+    <h2 class="blog-subtitle">帅哥美女们,快来一起码代码啊!!!</h2>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://avatars0.githubusercontent.com/u/20333903?v=3&amp;s=460">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>6</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>3</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>4</strong><br>标签</div></a>
+    </div>
+
+
+
+    <div class="social-link">
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong" target="_blank" title="Github">
+          Github
+        </a>
+      
+        <a class="hvr-bounce-in" href="https://blog.csdn.net/qq_38982845" target="_blank" title="CSDN">
+          CSDN
+        </a>
+      
+    </div>
+
+    <div class="friend-link">
+      <h2>友情链接</h2>
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong/fly-tong.github.io" target="_blank" title="my blog home">
+          my blog home
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy;2017 - 2018 Mr Tong<br>
+      由<a href="http://hexo.io/" target="_blank">Hexo</a>强力驱动 | 
+      主题-<a href="https://github.com/ShanaMaid/hexo-theme-shana">Shana</a>
+      
+    </div>
+    
+  </div>
+</footer>
+    </div>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/wow/0.1.6/wow.min.js"></script>
+<script>
+new WOW().init();
+</script>   
+
+
+  <link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+  <script src="/plugin/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <link rel="stylesheet" href="/plugin/galmenu/GalMenu.css">
+  <script src="/plugin/galmenu/GalMenu.js"></script>
+  <div class="GalMenu GalDropDown">
+      <div class="circle" id="gal">
+        <div class="ring">
+          
+            <a href="/" title="" class="menuItem">首页</a>
+          
+            <a href="/tags" title="" class="menuItem">标签</a>
+          
+            <a href="/categories" title="" class="menuItem">分类</a>
+          
+            <a href="/archives" title="" class="menuItem">归档</a>
+          
+            <a href="/about me" title="" class="menuItem">关于我</a>
+          
+            <a href="/xxxxxxx" title="" class="menuItem">xxxx</a>
+          
+        </div>
+        
+          <audio id="audio" src="#"></audio>
+        
+      </div> 
+</div>
+<div id="overlay" style="opacity: 1; cursor: pointer;"></div>
+  <script type="text/javascript">var items = document.querySelectorAll('.menuItem');
+    for (var i = 0,
+    l = items.length; i < l; i++) {
+      items[i].style.left = (50 - 35 * Math.cos( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
+      items[i].style.top = (50 + 35 * Math.sin( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%"
+    }</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('body').GalMenu({
+      'menu': 'GalDropDown'
+    })
+  });
+</script>
+
+  <section class="hidden-xs"> 
+  <ul class="cb-slideshow"> 
+    <li><span>苟利</span></li> 
+    <li><span>国家</span></li> 
+    <li><span>生死以</span></li> 
+    <li><span>岂能</span></li> 
+    <li><span>祸福</span></li> 
+    <li><span>趋避之</span></li> 
+  </ul>
+</section>
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
