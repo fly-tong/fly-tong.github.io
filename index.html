@@ -109,15 +109,42 @@
 pwd  查看当前位置(当我们在命令界面操作时有必要适当看看当前目录,以免出错)
 cd   目录地址  目录切换
 ls | ll  列表查看当前目录下文件与文件夹,ll为详细的信息
+ls -a 查看目录下的所有文件（包括以.开头的隐藏文件）
 </code></pre><h4 id="设置Linux的中文编码"><a href="#设置Linux的中文编码" class="headerlink" title="设置Linux的中文编码"></a>设置Linux的中文编码</h4><pre><code>输入命令进入修改界面:  vi /etc/sysconfig/i18n
-要修改的内容:  LANG=&quot;zh_CN.GBK&quot; 修改为LANG=&quot;zh_CN.UTF-8&quot; 
+要修改的内容:  LANG=&quot;en_US.UTF-8&quot; 修改为LANG=&quot;zh_CN.UTF-8&quot; 
 保存退出:  shift+:
 刷新:  source /etc/sysconfig/i18n
 检查编码：  locale
-</code></pre><h4 id="文件夹-文件-基本操作"><a href="#文件夹-文件-基本操作" class="headerlink" title="文件夹 文件 基本操作"></a>文件夹 文件 基本操作</h4><pre><code> mkdir   目录名(可以跟多个目录名)   创建文件夹
- rm -rf  目录(可以为多个)    删除文件夹
-mv      原始目录   修改后的目录   文件移动(可以进行重命名操作)
-</code></pre><h4 id="文件基本操作vim"><a href="#文件基本操作vim" class="headerlink" title="文件基本操作vim"></a>文件基本操作vim</h4><pre><code>vim    文件名   创建或者打开指定文件
+</code></pre><h4 id="文件夹-文件-基本操作"><a href="#文件夹-文件-基本操作" class="headerlink" title="文件夹 文件 基本操作"></a>文件夹 文件 基本操作</h4><pre><code>  mkdir   目录名(可以跟多个目录名)   创建文件夹
+  touch web.log   创建一个空文件
+  rm -rf  目录(可以为多个)    删除文件夹（f为强制删除）
+ mv      原始目录   修改后的目录   文件移动(可以进行重命名操作)
+ cat filename  一次性显示整个文件的内容
+ vi filename  打开文件并进入编辑状态
+ more filename 该命令一次显示一屏文本，满屏后停下来，并且在屏幕的底部出现一个提示信息，给出至今己显示的该文件的百分比（
+     按Space键，显示文本的下一屏内容。
+    按Enier键，只显示文本的下一行内容。
+    按B键，显示上一屏内容。
+    按Q键，退出。
+ ）
+ less filename  （
+     h 显示帮助界面 
+    Q 退出less 命令 
+    u 向后滚动半页 
+    d 向前翻半页 
+    空格键 滚动一页
+    b 向后翻一页 
+    回车键 滚动一行
+    [pagedown]： 向下翻动一页 
+    [pageup]： 向上翻动一页
+    以及上下键，向上一行，向下一行
+）
+head  -10 filename  打印文件前1到10行
+tail -10 filename 打印文件最后10行
+find  pathname –name filename   例子：find / -name profile
+  该命令表示为，在/目录下查找 名字为profile的文件或目录，最后列出它的绝对路径（ find /etc -name pro*也行，查找满足正则表达式）
+</code></pre><h4 id="文件基本操作vim"><a href="#文件基本操作vim" class="headerlink" title="文件基本操作vim"></a>文件基本操作vim</h4><pre><code>安装vim 软件   yum install vim  （这样linux的文件就会有代码的高亮显示）
+vim    文件名   创建或者打开指定文件
 按一下 i键  进入编辑状态 在编辑状态下修改文件
 u      撤销上一步的操作
 Ctrl+r 恢复上一步被撤销的操作
@@ -126,27 +153,42 @@ Ctrl+r 恢复上一步被撤销的操作
 查找下一个  按n键
 按一下 esc 键 退出编辑  
 shift+: 键  输入 wq 然后按 enter 键 执行写入并退出的操作
+</code></pre><h4 id="一般模式"><a href="#一般模式" class="headerlink" title="一般模式"></a>一般模式</h4><pre><code> yy 复制光标所在行(常用) 
+ nyy 复制光标所在行的向下n行，例如， 20yy则是复制20行(常用) 
+ p,P   p为复制的数据粘贴在光标下一行， P则为粘贴在光标上一行(常用)
+ G:光标移至第最后一行
+ nG：光标移动至第N行行首
+ n+：光标下移n行 
+ n-：光标上移n行 
+ H ：光标移至屏幕顶行 
+ M ：光标移至屏幕中间行 
+ L ：光标移至屏幕最后行 
+
+dd：删除 行 
+  x或X：删除一个字符，x删除光标后的，而X删除光标前的 
+u 恢复前一个动作(常用)
+  删除第N行到第M行：
+   :N,Md
 </code></pre><h4 id="文件copy"><a href="#文件copy" class="headerlink" title="文件copy"></a>文件copy</h4><pre><code>cp  源文件地址   目标文件目录地址  
 </code></pre><h4 id="文件夹copy"><a href="#文件夹copy" class="headerlink" title="文件夹copy"></a>文件夹copy</h4><pre><code>cp -r  源文件夹目录   目标文件夹目录  或  复制文件夹 cp -rf 要复制的目录 新目录  
 </code></pre><h4 id="进程问题"><a href="#进程问题" class="headerlink" title="进程问题"></a>进程问题</h4><ol>
-<li>查看进程 ps -ef|grep redis<br><a href="https://img-blog.csdnimg.cn/20181026124931828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" target="_blank" rel="noopener">https://img-blog.csdnimg.cn/20181026124931828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70</a></li>
-<li>杀死进程 kill -9 pid编号,pid编号为第一行的数字,可以一次清除多个进程,在后面写上多个pid就行<br><a href="https://img-blog.csdnimg.cn/20181026125247475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" target="_blank" rel="noopener">https://img-blog.csdnimg.cn/20181026125247475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70</a></li>
+<li>查看进程 ps -ef|grep redis<br><img src="https://img-blog.csdnimg.cn/20181026124931828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li>杀死进程 kill -9 pid编号,pid编号为第一行的数字,可以一次清除多个进程,在后面写上多个pid就行<br><img src="https://img-blog.csdnimg.cn/20181026125247475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" alt=" "></li>
 </ol>
-<h4 id="解压文件"><a href="#解压文件" class="headerlink" title="解压文件"></a>解压文件</h4><pre><code>解压 tar -zvxf 压缩文件
-</code></pre><h4 id="info-replication-查看状态"><a href="#info-replication-查看状态" class="headerlink" title="info replication 查看状态"></a>info replication 查看状态</h4><p><a href="https://img-blog.csdnimg.cn/20181026125450249.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" target="_blank" rel="noopener">https://img-blog.csdnimg.cn/20181026125450249.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70</a></p>
-<h1 id="二-静态ip-配置步骤"><a href="#二-静态ip-配置步骤" class="headerlink" title="二.静态ip 配置步骤"></a>二.静态ip 配置步骤</h1><p>   1.启动时选择<strong>桥接模式</strong><br>   2.启动后修改网卡文件<br>     vi /etc/sysconfig/network-scripts/ifcfg-eth0 修改ip地址<br>        BOOTPROTO dbcp–&gt;static<br>        ipv6—&gt;no<br>      添加配置<br>          IPADDR=192.168.1.XXX<br>          NETMASK=255.255.255.0<br>          GATEWAY=192.168.1.1<br>          DNS1=192.168.1.1<br>          物理地址:HWaddr 00:0C:29:76:1E:8A</p>
+<h4 id="解压文件"><a href="#解压文件" class="headerlink" title="解压文件"></a>解压文件</h4><pre><code>解压压缩文件 tar -zvxf  + 文件名
+</code></pre><h4 id="info-replication-查看状态"><a href="#info-replication-查看状态" class="headerlink" title="info replication 查看状态"></a>info replication 查看状态</h4><p><img src="https://img-blog.csdnimg.cn/20181026125450249.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_27,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="二-静态ip、网络配置步骤"><a href="#二-静态ip、网络配置步骤" class="headerlink" title="二.静态ip、网络配置步骤"></a>二.静态ip、网络配置步骤</h1><p>   1.启动时选择<strong>NAT模式</strong><br>   <img src="https://img-blog.csdnimg.cn/20181029185150911.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181029185202559.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   2.启动后修改网卡文件<br>     vi /etc/sysconfig/network-scripts/ifcfg-eth0 修改ip地址<br>        BOOTPROTO dbcp–&gt;static<br>        ipv6—&gt;no<br>      <strong>添加配置</strong><br>     DEVICE=eth0     #网卡设备名,请勿修改名字<br>    TYPE=Ethernet    #网络类型，以太网<br>    BOOTPROTO=static   #启用静态IP地址<br>    ONBOOT=yes  #开启自动启用网络连接<br>    IPADDR=192.168.78.100  #设置IP地址<br>    NETMASK=255.255.255.0  #设置子网掩码<br>    GATEWAY=192.168.78.2   #设置网关<br>    DNS1=114.114.114.114  #设置备DNS</p>
 <h4 id="改完之后的如下"><a href="#改完之后的如下" class="headerlink" title="改完之后的如下:"></a>改完之后的如下:</h4><pre><code>DEVICE=&quot;eth0&quot;
 BOOTPROTO=&quot;static&quot;
-HWADDR=&quot;00:0C:29:76:1E:8A&quot;
-IPV6INIT=&quot;no&quot;
 NM_CONTROLLED=&quot;yes&quot;
 ONBOOT=&quot;yes&quot;
 TYPE=&quot;Ethernet&quot;
-UUID=&quot;b86d8bd9-98e9-4e64-b7bd-7c88951d32b3&quot;
-IPADDR=192.168.1.123
+IPADDR=192.168.56.125
 NETMASK=255.255.255.0
-GATEWAY=192.168.1.1
-DNS1=192.168.1.1
+GATEWAY=192.168.56.2
+DNS1=114.114.114.114
+
+注意：你的ip前三位要与你的网关GATEWAY一致
 </code></pre><h4 id="保存并退出"><a href="#保存并退出" class="headerlink" title="保存并退出"></a>保存并退出</h4><pre><code>service network  restart 重启网络
 </code></pre><h4 id="执行测试"><a href="#执行测试" class="headerlink" title="执行测试"></a>执行测试</h4><pre><code>ping 192.168.1.1
 ping 192.168.1.xxx (windows ip)
@@ -156,8 +198,9 @@ ping baodu.com
 </code></pre><h4 id="利用xshell实现Windows与Linux文件互传"><a href="#利用xshell实现Windows与Linux文件互传" class="headerlink" title="利用xshell实现Windows与Linux文件互传"></a>利用xshell实现Windows与Linux文件互传</h4><pre><code>   在Linux主机上，安装上传下载工具包rz及sz
 
 只需要安装这个包即可。
-
 [root@localhost src]#  yum install -y lrzs z
+
+除了可以用rz sz命令进行本地windows系统和虚拟机之间的文件传输，还可以使用XFTP软件。
 </code></pre><h1 id="三-项目部署到Linux流程"><a href="#三-项目部署到Linux流程" class="headerlink" title="三.项目部署到Linux流程"></a>三.项目部署到Linux流程</h1><h2 id="1-安装jdk"><a href="#1-安装jdk" class="headerlink" title="1. 安装jdk"></a>1. 安装jdk</h2><pre><code>yum list|grep jdk   查找jdk 相关软件
 yum install  +版本号  安装指定版本jdk
 查看安装是否成功:  java -version
@@ -203,7 +246,7 @@ service  iptables  stop   关闭防火墙
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/26/Linux基本命令及项目上线/" data-id="cjnpxg7wl00037ku7rsomy8y7" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/26/Linux基本命令及项目上线/" data-id="cjnpy92ce0005hou70y3886fa" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux基本命令/">linux基本命令</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/项目在linux上线/">项目在linux上线</a></li></ul>
@@ -336,7 +379,7 @@ service  iptables  stop   关闭防火墙
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/24/Http详解/" data-id="cjnpxg7wh00027ku7lo75xiqq" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/24/Http详解/" data-id="cjnpy92cc0004hou7h3uuhyl7" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/">HTTP</a></li></ul>
@@ -842,7 +885,7 @@ public void test01(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/15/正式版/" data-id="cjnpxg7wt00067ku7ydr1jkzn" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/15/正式版/" data-id="cjnpy92cm0008hou7ak2hsgzj" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java分类/">java分类</a></li></ul>
@@ -893,7 +936,7 @@ public void test01(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/15/第三次测试啦/" data-id="cjnpxg7wv00077ku71we4l9qs" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/15/第三次测试啦/" data-id="cjnpy92c70002hou7ffq7xxep" class="article-share-link">分享</a>
       
       
     </footer>
@@ -942,7 +985,7 @@ public void test01(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/14/第二次测试啦/" data-id="cjnpxg7wy00087ku7wzsszw3g" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/14/第二次测试啦/" data-id="cjnpy92co0009hou7r69uq85r" class="article-share-link">分享</a>
       
       
     </footer>
@@ -993,7 +1036,7 @@ public void test01(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/14/hello-world/" data-id="cjnpxg7w800007ku7n5fcdnl3" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/14/hello-world/" data-id="cjnpy92by0000hou7wh5t6t0d" class="article-share-link">分享</a>
       
       
     </footer>
