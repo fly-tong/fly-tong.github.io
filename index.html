@@ -41,9 +41,9 @@
     <h2 class="author">Mr Tong</h2>
     <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
     <div class="count-box">
-      <a href="/archives"><div><strong>6</strong><br>文章</div></a>
+      <a href="/archives"><div><strong>7</strong><br>文章</div></a>
       <a href="/categories"><div><strong>3</strong><br>分类</div></a>
-      <a href="/tags"><div><strong>4</strong><br>标签</div></a>
+      <a href="/tags"><div><strong>5</strong><br>标签</div></a>
     </div>
     <ul class="blog-link">
      
@@ -63,11 +63,210 @@
             <li>标签</li>
           </a>
         
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
     </ul>
   </div>
 </div>
 
         <section id="main">
+  
+    <article id="post-Linux进阶命令" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/31/Linux进阶命令/" class="article-date">
+  <time class="post-time" datetime="2018-10-30T16:09:00.000Z" itemprop="datePublished">
+    <span class="post-month">10月</span><br/>
+    <span class="post-day">31</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/31/Linux进阶命令/">Linux进阶命令</a>
+    </h1>
+  
+
+        <div>
+          
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+          
+              
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/10/31/Linux进阶命令/" class="leancloud_visitors" data-flag-title="Linux进阶命令">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-Linux基础命令"><a href="#一-Linux基础命令" class="headerlink" title="一. Linux基础命令"></a>一. Linux基础命令</h2><h5 id="1-新建文件"><a href="#1-新建文件" class="headerlink" title="1. 新建文件"></a>1. 新建文件</h5><pre><code>touch web.log 创建一个名为web.log空文件
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181030225016237.png" alt="在这里插入图片描述"></p>
+<h5 id="2-复制文件"><a href="#2-复制文件" class="headerlink" title="2.复制文件"></a>2.复制文件</h5><pre><code>cp web.log web_cp.log
+</code></pre><p><img src="https://img-blog.csdnimg.cn/2018103022520095.png" alt="在这里插入图片描述"></p>
+<pre><code>复制文件，加个-r 参数，代表遍历复制，此时可用于复制一个
+</code></pre><p>目录。</p>
+<h5 id="3-删除文件"><a href="#3-删除文件" class="headerlink" title="3.删除文件"></a>3.删除文件</h5><pre><code>rm m web_cp.log
+</code></pre><h5 id="4-查看文件"><a href="#4-查看文件" class="headerlink" title="4.查看文件"></a>4.查看文件</h5><pre><code>cat filename: 一次性显示整个文件的内容
+more filename 该命令一次显示一屏文本，满屏后停下来，并且在屏幕的底部出现一个提示信息，给出至今己显示的该文件的
+百分比(
+    按 Space 键，显示文本的下一屏内容。
+    按 Enier 键，只显示文本的下一行内容。
+    按 B 键，显示上一屏内容。
+    按 Q 键，退出。
+)
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181030225720662.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<pre><code>less 命令 与 more 命令 非常类似 less filename  (
+    h 显示帮助界面
+    Q 退出 less 命令
+    u 向后滚动半页
+    d 向前翻半页
+    空格键 滚动一页
+    b 向后翻一页
+    回车键 滚动一行
+    [pagedown]： 向下翻动一页
+    [pageup]： 向上翻动一页
+    以及上下键，向上一行，向下一行
+)
+</code></pre><h5 id="5-从头或尾打印"><a href="#5-从头或尾打印" class="headerlink" title="5.从头或尾打印"></a>5.从头或尾打印</h5><pre><code>head -10 filename 打印文件 1 到 10 行
+tail -10 filename 打印文件最后 10 行
+</code></pre><h5 id="7-查找文件或目录"><a href="#7-查找文件或目录" class="headerlink" title="7.查找文件或目录"></a>7.查找文件或目录</h5><pre><code>f ind pathname –name filename
+例子：find / -name profile   该命令表示为，在/目录下查找 名字为 profile 的文件或目录，最后列出它的绝对路径
+
+还可以按正则表达式来查找，且 pathname 越精确，查找的范围越小，速度越快。find /etc -name pro*
+</code></pre><h5 id="8-其他类"><a href="#8-其他类" class="headerlink" title="8.其他类"></a>8.其他类</h5><pre><code>q!  不保存文件并退出 vi
+在 VI 的命令模式下输入“:set nu”，就有行号了。
+在 VI 的命令模式下输入“:set nonu”，取消行号。
+yy  复制光标所在行(常用)
+• nyy  复制光标所在行的向下 n 行，例如， 20yy 则是复制 20行(常用)
+• p,P  小p 为复制的数据粘贴在光标下一行， 大P 则为粘贴在光标上一行(常用)
+G:光标移至第最后一行
+nG：光标移动至第 N 行行首
+n+：光标下移 n 行
+n-：光标上移 n 行
+H ：光标移至屏幕顶行
+M ：光标移至屏幕中间行
+L ：光标移至屏幕最后行
+• dd：删除 行
+x 或 X：删除一个字符，x 删除光标后的，而 X 删除光标前的
+• u 恢复前一个动作(常用)
+删除第 N 行到第 M 行   :N,Md
+</code></pre><h5 id="9-将本地目录复制到远程机器"><a href="#9-将本地目录复制到远程机器" class="headerlink" title="9.将本地目录复制到远程机器"></a>9.将本地目录复制到远程机器</h5><pre><code>scp -r local_folderremote_username@remote_ip:remote_folder
+例如:  scp -r /root/Desktop/tomcat/apache-tomcat-8.5.24 root@192.168.56.124:/root/Desktop/tomcat  (将Tomcat拷贝到远程机器那去)
+</code></pre><h2 id="二-linux网络类命令"><a href="#二-linux网络类命令" class="headerlink" title="二.linux网络类命令"></a>二.linux网络类命令</h2><h5 id="1-查看ip"><a href="#1-查看ip" class="headerlink" title="1.查看ip"></a>1.查看ip</h5><pre><code>ifconfig   箭头 1 指向的是本机 IP，箭头 2 为广播地址，箭头 3 位子网掩码。
+</code></pre><p><img src="https://img-blog.csdnimg.cn/2018103023352517.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="2-测试与目标主机的连通性"><a href="#2-测试与目标主机的连通性" class="headerlink" title="2.测试与目标主机的连通性"></a>2.测试与目标主机的连通性</h5><pre><code>ping remote_ip   注意：linux 系统的 ping 命令会一直发送数据包，进行测试，除非认为的按 ctrl + c 停止掉，
+windows 系统默认只会发 4 个包进行测试，以下为 windows 的 dos 命令。
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181030233625726.png" alt="在这里插入图片描述"></p>
+<h5 id="3-显示各种网络相关信息"><a href="#3-显示各种网络相关信息" class="headerlink" title="3.显示各种网络相关信息"></a>3.显示各种网络相关信息</h5><pre><code>netstat  
+
+-a (all)显示所有选项，默认不显示 LISTEN 相关
+-t (tcp)仅显示 tcp 相关选项
+-u (udp)仅显示 udp 相关选项
+-n 拒绝显示别名，能显示数字的全部转化成数字。
+-l 仅列出有在 Listen (监听) 的服務状态
+-p 显示建立相关链接的程序名
+-r 显示路由信息，路由表
+-e 显示扩展信息，例如 uid 等
+-s 按各个协议进行统计
+-c 每隔一个固定时间，执行该 netstat 命令。
+</code></pre><h2 id="三-linux系统配置命令"><a href="#三-linux系统配置命令" class="headerlink" title="三.linux系统配置命令"></a>三.linux系统配置命令</h2><h5 id="1-主机名配置"><a href="#1-主机名配置" class="headerlink" title="1.  主机名配置"></a>1.  主机名配置</h5><pre><code>若要修改主机名字，可在/etc/sysconfig/network文件里修改.
+vim /etc/sysconfig/network    (机器重启才能生效)
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181030234010838.png" alt="在这里插入图片描述"></p>
+<h5 id="2-DNS-配置"><a href="#2-DNS-配置" class="headerlink" title="2. DNS  配置"></a>2. DNS  配置</h5><pre><code>hosts 文件的作用相当于 DNS，提供 IP 地址 hostname 的对应,可在这个文件里添加映射。域名解析
+vi /etc/hosts  (后面有s的)
+</code></pre><p><img src="https://img-blog.csdnimg.cn/201810302341163.png" alt="在这里插入图片描述"></p>
+<pre><code>测试：直接 ping 主机名
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181030234202738.png" alt="在这里插入图片描述"></p>
+<h5 id="3-环境变量配置"><a href="#3-环境变量配置" class="headerlink" title="3.环境变量配置"></a>3.环境变量配置</h5><pre><code>Linux 系统的环境变量是在/etc/profile 文件里配置.系统 path 里有很多路径，路径之间有冒号隔开。当用户敲命令时，
+系统会从左往右依次寻找对应的程序，有的话则运行该程序，没有的就报错，command not found.
+查看path的命令   echo $path  (echo相当于输出语法一样)
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181030234356428.png" alt="在这里插入图片描述"></p>
+<h5 id="4-linux服务操作"><a href="#4-linux服务操作" class="headerlink" title="4.linux服务操作"></a>4.linux服务操作</h5><h6 id="列出所有服务"><a href="#列出所有服务" class="headerlink" title="列出所有服务"></a>列出所有服务</h6><pre><code>chkconfig
+查询操作系统在每一个执行等级中会执行哪些系统服务，其中包括各类常驻服务。
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181030234639705.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<pre><code>各数字代表的系统初始化级别含义：
+
+0：停机状态
+1：单用户模式，root 账户进行操作
+2：多用户，不能使用 net file system，一般很少用
+3：完全多用户，一部分启动，一部分不启动，命令行界面
+4：未使用、未定义的保留模式
+5：图形化，3 级别中启动的进程都启动，并且会启动一部分
+图形界面进程。
+6：停止所有进程，卸载文件系统，重新启动(reboot)
+
+这些级别中 1、2、4 很少用，相对而言 0、3、5、6 用的会较多。3 级别和 5 级别除了桌面相关的进程外没有什么区别。为了减少资源占用，推荐都用 3 级别.
+注意 ：linux 默认级别为 3，不要把 initdefault 设置为 0 和 6
+</code></pre><h6 id="服务操作"><a href="#服务操作" class="headerlink" title="服务操作"></a>服务操作</h6><pre><code>service 服务名 start/stop/status/restart
+例子：对防火墙服务进行操作，防火墙的服务名为：iptables.查看防火墙服务运行状态。
+</code></pre><h6 id="服务初执行等级更改"><a href="#服务初执行等级更改" class="headerlink" title="服务初执行等级更改"></a>服务初执行等级更改</h6><pre><code>chkconfig --level 2345 name off|on 
+若不加级别，默认是 2345 级别,命令：chkconfig name on|off  
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181030235146161.png" alt="在这里插入图片描述"></p>
+<h5 id="5-进程操作"><a href="#5-进程操作" class="headerlink" title="5.进程操作"></a>5.进程操作</h5><h6 id="查看所有进程"><a href="#查看所有进程" class="headerlink" title="查看所有进程"></a>查看所有进程</h6><pre><code> ps -aux
+ -a 列出所有
+-u 列出用户
+-x 详细列出，如 cpu、内存等
+
+ ps - ef | grep ssh    (后面的grep相当于搜索条件)
+ 查看所有进程里 CMD 是 ssh 的进程信息。其中箭头所指的是 sshd 服务进程的进程号（PID）
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181030235441743.png" alt="在这里插入图片描述"></p>
+<h6 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h6><pre><code>kill -9 pid
+-9：强制杀死
+ps 命令先查出对应程序的 PID 或 PPID ，然后杀死掉进程。
+</code></pre><h2 id="其他常用命令"><a href="#其他常用命令" class="headerlink" title="其他常用命令"></a>其他常用命令</h2><h5 id="1-yum"><a href="#1-yum" class="headerlink" title="1.yum"></a>1.yum</h5><pre><code>yum 是一个在 Fedora 和 RedHat 以及 CentOS 中的 Shell 前端软件包管理器。基于 RPM 包管理，能够从指定的服务器自动下载 RPM 包并
+且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。
+
+查看当前源   yum list | head -50
+</code></pre><h5 id="2-wget"><a href="#2-wget" class="headerlink" title="2.wget"></a>2.wget</h5><pre><code>wget 是一个从网络上自动下载文件的自由工具，支持通过 HTTP、HTTPS、FTP 三个最常见的 TCP/IP 协议 下载，如果你的linux没有wget
+需要先安装 yum install wget –y
+wget 用法:wget [option] 网址 -O 指定下载保存的路径 
+</code></pre><p><img src="https://img-blog.csdnimg.cn/2018103100022765.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181031000240613.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="3-tar"><a href="#3-tar" class="headerlink" title="3.tar"></a>3.tar</h5><pre><code>-z gzip 进行解压或压缩，带.gz 需要加，压缩出来.gz 也需要加
+-x 解压
+-c 压缩
+-f 目标文件，压缩文件新命名或解压文件名
+-v 解压缩过程信息打印
+
+解压命令  tar -zvxf xxxx.tar.gz
+压缩命令  tar -zcf 压缩包命名 压缩目标
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/31/Linux进阶命令/" data-id="cjnvxgyc900005wu73ylbkt6z" class="article-share-link">分享</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux的进阶命令/">linux的进阶命令</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
   
     <article id="post-Linux基本命令及项目上线" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -98,6 +297,13 @@
 
           
               
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/10/26/Linux基本命令及项目上线/" class="leancloud_visitors" data-flag-title="Linux基本命令及项目上线">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
 
           
         </div>
@@ -246,7 +452,7 @@ service  iptables  stop   关闭防火墙
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/26/Linux基本命令及项目上线/" data-id="cjnpy92ce0005hou70y3886fa" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/26/Linux基本命令及项目上线/" data-id="cjnvso1y00004asu7flftpt68" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux基本命令/">linux基本命令</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/项目在linux上线/">项目在linux上线</a></li></ul>
@@ -289,6 +495,13 @@ service  iptables  stop   关闭防火墙
 
           
               
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/10/24/Http详解/" class="leancloud_visitors" data-flag-title="Http详解">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
 
           
         </div>
@@ -379,7 +592,7 @@ service  iptables  stop   关闭防火墙
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/24/Http详解/" data-id="cjnpy92cc0004hou7h3uuhyl7" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/24/Http详解/" data-id="cjnvso1xv0002asu7puewyd1e" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/">HTTP</a></li></ul>
@@ -422,6 +635,13 @@ service  iptables  stop   关闭防火墙
 
           
               
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/10/15/正式版/" class="leancloud_visitors" data-flag-title="正式版">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
 
           
         </div>
@@ -885,7 +1105,7 @@ public void test01(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/15/正式版/" data-id="cjnpy92cm0008hou7ak2hsgzj" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/15/正式版/" data-id="cjnvso1yb0008asu7qri6jiz1" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java分类/">java分类</a></li></ul>
@@ -924,6 +1144,13 @@ public void test01(){
           
           
               
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/10/15/第三次测试啦/" class="leancloud_visitors" data-flag-title="第三次测试啦!!!!">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
 
           
         </div>
@@ -936,7 +1163,7 @@ public void test01(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/15/第三次测试啦/" data-id="cjnpy92c70002hou7ffq7xxep" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/15/第三次测试啦/" data-id="cjnvso1y70007asu72sqbbbbc" class="article-share-link">分享</a>
       
       
     </footer>
@@ -973,6 +1200,13 @@ public void test01(){
           
           
               
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/10/14/第二次测试啦/" class="leancloud_visitors" data-flag-title="第二次测试啦!!!">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
 
           
         </div>
@@ -985,7 +1219,7 @@ public void test01(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/14/第二次测试啦/" data-id="cjnpy92co0009hou7r69uq85r" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/14/第二次测试啦/" data-id="cjnvso1yd0009asu7je5h20ze" class="article-share-link">分享</a>
       
       
     </footer>
@@ -1022,6 +1256,13 @@ public void test01(){
           
           
               
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/10/14/hello-world/" class="leancloud_visitors" data-flag-title="第一个blog的测试">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
 
           
         </div>
@@ -1036,7 +1277,7 @@ public void test01(){
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/14/hello-world/" data-id="cjnpy92by0000hou7wh5t6t0d" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/14/hello-world/" data-id="cjnvso1xm0000asu7kt9r9lah" class="article-share-link">分享</a>
       
       
     </footer>
@@ -1057,7 +1298,7 @@ public void test01(){
   <h3 class="widget-title"></h3>
   <div class="widget">
     <h1 class="blog-title">萌萌的PP</h1>
-    <h2 class="blog-subtitle">帅哥美女们,快来一起码代码啊!!!</h2>
+    <h2 class="blog-subtitle">帅哥美女们 , 快来一起码代码啊!!!</h2>
     <ul class="blog-link">
      
           <a href="/" title="Home">
@@ -1076,6 +1317,14 @@ public void test01(){
             <li>标签</li>
           </a>
         
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
     </ul>
   </div>
 </div>
@@ -1088,9 +1337,9 @@ public void test01(){
     <h2 class="author">Mr Tong</h2>
     <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
     <div class="count-box">
-      <a href="/archives"><div><strong>6</strong><br>文章</div></a>
+      <a href="/archives"><div><strong>7</strong><br>文章</div></a>
       <a href="/categories"><div><strong>3</strong><br>分类</div></a>
-      <a href="/tags"><div><strong>4</strong><br>标签</div></a>
+      <a href="/tags"><div><strong>5</strong><br>标签</div></a>
     </div>
 
 
@@ -1110,8 +1359,8 @@ public void test01(){
     <div class="friend-link">
       <h2>友情链接</h2>
       
-        <a class="hvr-bounce-in" href="https://github.com/fly-tong/fly-tong.github.io" target="_blank" title="my blog home">
-          my blog home
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong/fly-tong.github.io" target="_blank" title="blog home">
+          blog home
         </a>
       
     </div>
@@ -1163,13 +1412,13 @@ new WOW().init();
           
             <a href="/archives" title="" class="menuItem">归档</a>
           
-            <a href="/about me" title="" class="menuItem">关于我</a>
+            <a href="/" title="" class="menuItem">关于</a>
           
-            <a href="/xxxxxxx" title="" class="menuItem">xxxx</a>
+            <a href="/" title="" class="menuItem">展示</a>
           
         </div>
         
-          <audio id="audio" src="#"></audio>
+          <audio id="audio" src="plugin/galmenu/wulusai.mp3"></audio>
         
       </div> 
 </div>
@@ -1199,6 +1448,115 @@ new WOW().init();
   </ul>
 </section>
 <script src="/js/script.js"></script>
+
+
+
+
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.article-title').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
 
 
