@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hadoop入门 | 萌萌的PP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一.Hadoop简介1.Hadoop  分布式 简介Hadoop  是分布式的系统架构，是 e Apache  基金会顶级金牌项目 2.Hadoop  的思想之源来自于 Google 03 年发布 3 大论文， GFS、MapReduce、Bigtable ；Dougcutting 用 Java 实现) 3.Hadoop作者Hadoop 作者 Doug cutting，就职 Yahoo 期间开发了">
+<meta name="keywords" content="hadoop,HDFS分布式存储,HDFS集群搭建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop入门">
+<meta property="og:url" content="http://yoursite.com/2018/11/02/Hadoop入门/index.html">
+<meta property="og:site_name" content="萌萌的PP">
+<meta property="og:description" content="一.Hadoop简介1.Hadoop  分布式 简介Hadoop  是分布式的系统架构，是 e Apache  基金会顶级金牌项目 2.Hadoop  的思想之源来自于 Google 03 年发布 3 大论文， GFS、MapReduce、Bigtable ；Dougcutting 用 Java 实现) 3.Hadoop作者Hadoop 作者 Doug cutting，就职 Yahoo 期间开发了">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101233214591.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2018110123330933.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101233615684.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101233808995.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101234130482.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101234153566.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101234549677.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101234729844.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101235029638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101235106291.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181102004429718.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181102004647921.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181102005114527.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2018-11-02T01:09:04.335Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hadoop入门">
+<meta name="twitter:description" content="一.Hadoop简介1.Hadoop  分布式 简介Hadoop  是分布式的系统架构，是 e Apache  基金会顶级金牌项目 2.Hadoop  的思想之源来自于 Google 03 年发布 3 大论文， GFS、MapReduce、Bigtable ；Dougcutting 用 Java 实现) 3.Hadoop作者Hadoop 作者 Doug cutting，就职 Yahoo 期间开发了">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181101233214591.png">
+  
+    <link rel="alternate" href="/atom.xml" title="萌萌的PP" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/plugin/bganimation/bg.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <div class="widget-wrap mobile-header">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://avatars0.githubusercontent.com/u/20333903?v=3&amp;s=460">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>9</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>4</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>10</strong><br>标签</div></a>
+    </div>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+        <section id="main"><article id="post-Hadoop入门" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/02/Hadoop入门/" class="article-date">
+  <time class="post-time" datetime="2018-11-02T01:07:00.000Z" itemprop="datePublished">
+    <span class="post-month">11月</span><br/>
+    <span class="post-day">02</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Hadoop入门
+    </h1>
+  
+
+        <div>
+          
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/大数据技术/">大数据技术</a>
+  </div>
+
+          
+              
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/11/02/Hadoop入门/" class="leancloud_visitors" data-flag-title="Hadoop入门">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-Hadoop简介"><a href="#一-Hadoop简介" class="headerlink" title="一.Hadoop简介"></a>一.Hadoop简介</h2><h4 id="1-Hadoop-分布式-简介"><a href="#1-Hadoop-分布式-简介" class="headerlink" title="1.Hadoop  分布式 简介"></a>1.Hadoop  分布式 简介</h4><p>Hadoop  是分布式的系统架构，是 e Apache  基金会顶级金牌项目<br><img src="https://img-blog.csdnimg.cn/20181101233214591.png" alt="在这里插入图片描述"></p>
+<h4 id="2-Hadoop-的思想之源"><a href="#2-Hadoop-的思想之源" class="headerlink" title="2.Hadoop  的思想之源"></a>2.Hadoop  的思想之源</h4><p>来自于 Google 03 年发布 3 大论文， GFS、MapReduce、Bigtable ；Dougcutting 用 Java 实现)</p>
+<h4 id="3-Hadoop作者"><a href="#3-Hadoop作者" class="headerlink" title="3.Hadoop作者"></a>3.Hadoop作者</h4><p>Hadoop 作者 Doug cutting，就职 Yahoo 期间开发了 Hadoop项目，目前在 Cloudera 公司从事架构工作<br><img src="https://img-blog.csdnimg.cn/2018110123330933.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="4-Hadoop-组成"><a href="#4-Hadoop-组成" class="headerlink" title="4.Hadoop  组成"></a>4.Hadoop  组成</h4><p>Hadoop = hdfs（存储） + mapreduce(计算) + yarn(资源管理) </p>
+<h6 id="a-分布式存储系统-HDFS-（Hadoop-Distributed-FileSystem-）"><a href="#a-分布式存储系统-HDFS-（Hadoop-Distributed-FileSystem-）" class="headerlink" title="a. 分布式存储系统 HDFS  （Hadoop Distributed FileSystem  ）"></a>a. 分布式存储系统 HDFS  （Hadoop Distributed FileSystem  ）</h6><p>– 分布式的存储系统<br>– 提供了 高可靠性、高扩展性和高吞吐率的数据存储服务</p>
+<h6 id="b-分布式计算框架-MapReduce"><a href="#b-分布式计算框架-MapReduce" class="headerlink" title="b. 分布式计算框架 MapReduce"></a>b. 分布式计算框架 MapReduce</h6><p>– 分布式计算框架（计算向数据移动）<br>– 具有 易于编程、高容错性和高扩展性等优点。</p>
+<h6 id="c-分布式资源管理框架-YARN-（Yet-Another-Resource-Management-）"><a href="#c-分布式资源管理框架-YARN-（Yet-Another-Resource-Management-）" class="headerlink" title="c. 分布式资源管理框架 YARN （Yet Another Resource Management ）"></a>c. 分布式资源管理框架 YARN （Yet Another Resource Management ）</h6><p>– 负责集群资源的管理和调度</p>
+<h2 id="二-分布式文件存储系统-HDFS"><a href="#二-分布式文件存储系统-HDFS" class="headerlink" title="二.分布式文件存储系统 HDFS"></a>二.分布式文件存储系统 HDFS</h2><h4 id="1-HDFS真面目"><a href="#1-HDFS真面目" class="headerlink" title="1.HDFS真面目"></a>1.HDFS真面目</h4><p>HDFS 是 Hadoop 分布式文件存储系统为什么会有分布式的文件存储系统出现？面对的大量的数据和如何计算的难题大量【pb 级以上】的网页怎么存储问题 （之前是用磁柜存储）</p>
+<h6 id="分布式存储系统-HDFS-（Hadoop-Distributed-File-System）主要解决大数据的存储问题"><a href="#分布式存储系统-HDFS-（Hadoop-Distributed-File-System）主要解决大数据的存储问题" class="headerlink" title="分布式存储系统 HDFS （Hadoop Distributed File System）主要解决大数据的存储问题"></a>分布式存储系统 HDFS （Hadoop Distributed File System）<strong>主要解决大数据的存储问题</strong></h6><p>经过多年的发展，HDFS 的应用已经非常成熟非常多，如百度网盘 360 云盘 腾讯微云 阿里云（不仅提供服务器和云存储还提供服务，比一般的强多了）大数据好多技术框架都架构于这个文件存储系统之上的。</p>
+<h6 id="hadoop2-0时代的生态系统如下"><a href="#hadoop2-0时代的生态系统如下" class="headerlink" title="hadoop2.0时代的生态系统如下:"></a>hadoop2.0时代的生态系统如下:</h6><p><img src="https://img-blog.csdnimg.cn/20181101233615684.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="2-HDFS-架构图"><a href="#2-HDFS-架构图" class="headerlink" title="2.==HDFS  架构图=="></a>2.==HDFS  架构图==</h4><p><img src="https://img-blog.csdnimg.cn/20181101233808995.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="3-架构图详解"><a href="#3-架构图详解" class="headerlink" title="3.架构图详解"></a>3.架构图详解</h4><h5 id="3-1-HDFS-的功能模块及原理详解"><a href="#3-1-HDFS-的功能模块及原理详解" class="headerlink" title="3-1. HDFS  的功能模块及原理详解"></a>3-1. HDFS  的功能模块及原理详解</h5><h6 id="3-1-1-HDFS-数据存储单元（block"><a href="#3-1-1-HDFS-数据存储单元（block" class="headerlink" title="3-1-1. HDFS  数据存储单元（block )"></a>3-1-1. HDFS  数据存储单元（block )</h6><p>一个文件被切分成固定大小的数据块 block(在客户端切分)</p>
+<pre><code>• 默认数据块大小为 128MB (hadoop2.x)，可自定义配置
+• 若文件大小不到 128MB ，则单独存成一个 block
+</code></pre><p>一个文件存储方式</p>
+<pre><code>• 按大小被切分成若干个 block ，存储到不同节点上
+• 默认情况下每个 block 都有 3 个副本
+* Block 大小和副本数通过 Client 端上传文件时设置，文件上传成功后副本数可以变更，Block Size 不可变更
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181101234130482.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181101234153566.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h6 id="3-1-2-hdfs存储模型：字节"><a href="#3-1-2-hdfs存储模型：字节" class="headerlink" title="3-1-2. hdfs存储模型：字节"></a>3-1-2. hdfs存储模型：字节</h6><pre><code>– 文件线性切割成块（Block）:偏移量 offset （byte）
+– Block 分散存储在集群节点中
+– 单一文件 Block 大小一致，文件与文件可以不一致
+– Block 可以设置副本数，副本分散在不同节点中
+• 副本数不要超过节点数量
+– 文件上传可以设置 Block 大小和副本数
+– 已上传的文件 Block 副本数可以调整，大小不变
+– 只支持一次写入多次读取，同一时刻只有一个写入者
+– 可以 append 追加数据
+</code></pre><h5 id="3-2-NameNode-（简称-NN"><a href="#3-2-NameNode-（简称-NN" class="headerlink" title="3-2. NameNode （简称 NN )"></a>3-2. NameNode （简称 NN )</h5><h6 id="3-2-1-NameNode-主要功能："><a href="#3-2-1-NameNode-主要功能：" class="headerlink" title="3-2-1. NameNode  主要功能："></a>3-2-1. NameNode  主要功能：</h6><pre><code>• 接受客户端的读/写服务
+• 收集 DataNode 汇报的 Block 列表信息
+</code></pre><h6 id="3-2-2-基于内存存储-不会和磁盘发生交换"><a href="#3-2-2-基于内存存储-不会和磁盘发生交换" class="headerlink" title="3-2-2. 基于内存存储 :==不会和磁盘发生交换=="></a>3-2-2. 基于内存存储 :==不会和磁盘发生交换==</h6><pre><code>• 只存在内存中
+• 持久化
+</code></pre><h6 id="3-2-3-NameNode-保存metadata-信息"><a href="#3-2-3-NameNode-保存metadata-信息" class="headerlink" title="3-2-3.  NameNode  保存metadata  信息"></a>3-2-3.  NameNode  保存metadata  信息</h6><pre><code>• 文件 owership(归属)和 permissions(权限)
+• 文件大小，时间
+• （Block 列表：Block 偏移量），位置信息
+• Block 保存在哪个 DataNode 信息（由 DataNode 启动时上报,不保存在磁盘）
+</code></pre><h6 id="3-2-4-NameNode-持久化"><a href="#3-2-4-NameNode-持久化" class="headerlink" title="3-2-4.  NameNode  持久化"></a>3-2-4.  NameNode  持久化</h6><pre><code>• NameNode 的 metadate 信息在启动后会加载到内存
+• metadata 存储到磁盘文件名为”fsimage”
+• Block 的位置信息不会保存到 fsimage
+• edits 记录对 metadata 的操作日志
+</code></pre><p>– fsimage 保存了最新的元数据检查点,类似快照。<br>– editslog 保存自最新检查点后的元信息变化，从最新检查点后，hadoop 将对每个文件的操作都保存在 edits 中。客户端修改文件时候，先写到 editlog，成功后才更新内存中的metadata 信息<br>==Metadata = fsimage + editslog==</p>
+<h5 id="3-3-DataNode-（DN-）"><a href="#3-3-DataNode-（DN-）" class="headerlink" title="3-3. DataNode （DN ）"></a>3-3. DataNode （DN ）</h5><p>•本地磁盘目录存储数据（Block），文件的形式<br>• 同时存储 Block 的元数据信息文件<br>• 启动 DN 进程的时候会向 NameNode 汇报 block 信息<br>• 通过向 NN 发送心跳保持与其联系（3 秒一次），如果 NN 10分钟没有收到 DN 的心跳，则认为其已经 lost，并 copy 其上的 block 到其它 DN</p>
+<h5 id="3-4-SecondaryNameNode-（SNN"><a href="#3-4-SecondaryNameNode-（SNN" class="headerlink" title="3-4. SecondaryNameNode （SNN )"></a>3-4. SecondaryNameNode （SNN )</h5><p>– 它的主要工作是帮助 NN 合并 edits log 文件，减少 NN 启动时间,它不是 NN 的备份（但可以做备份)。<br>– SNN 执行合并时间和机制</p>
+<pre><code>•A、根据配置文件设置的时间间隔 fs.checkpoint.period 默认 3600 秒。
+•B、根据配置文件设置 edits log 大小 fs.checkpoint.size规定 edits 文件的最大值默认是 64MB
+</code></pre><h5 id="3-5-SecondaryNameNode-SNN-合并流程"><a href="#3-5-SecondaryNameNode-SNN-合并流程" class="headerlink" title="3-5. SecondaryNameNode SNN 合并流程"></a>3-5. SecondaryNameNode SNN 合并流程</h5><p><img src="https://img-blog.csdnimg.cn/20181101234549677.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>首先是 NN 中的 Fsimage 和 edits 文件通过网络拷贝，到达SNN 服务器中，拷贝的同时，用户的实时在操作数据，那么 NN中就会从新生成一个 edits 来记录用户的操作，而另一边的 SＮＮ将拷贝过来的 edits 和 fsimage 进行合并，合并之后就替换NN 中的 fsimage。之后 NN 根据 fsimage 进行操作（当然每隔一段时间就进行替换合并，循环）。当然新的 edits 与合并之后传输过来的 fsimage 会在下一次时间内又进行合并。</p>
+<h5 id="3-6-Block的副本放置策略"><a href="#3-6-Block的副本放置策略" class="headerlink" title="3-6. Block的副本放置策略"></a>3-6. Block的副本放置策略</h5><p>– 第一个副本：放置在上传文件的 DN；如果是集群外提交，则随机挑选一台磁盘不太满，CPU 不太忙的节点。<br>– 第二个副本：放置在于第一个副本不同的机架的节点上。<br>– 第三个副本：与第二个副本相同机架的不同节点。<br>– 更多副本：随机节点</p>
+<pre><code>集群内提交：会放到不同的基站(服务器上,减少宕机的概率)
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181101234729844.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="4-HDFS读写流程"><a href="#4-HDFS读写流程" class="headerlink" title="4. HDFS读写流程"></a>4. HDFS读写流程</h4><h5 id="4-1-写文件流程"><a href="#4-1-写文件流程" class="headerlink" title="4-1. 写文件流程"></a>4-1. 写文件流程</h5><p><img src="https://img-blog.csdnimg.cn/20181101235029638.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h6 id="HDFS-写流程"><a href="#HDFS-写流程" class="headerlink" title="HDFS 写流程"></a>HDFS 写流程</h6><p>– Client：</p>
+<pre><code>• 切分文件 Block
+• 按 Block 线性和 NN 获取 DN 列表（副本数）
+• 验证 DN 列表后以更小的单位(packet)流式传输数据
+</code></pre><p>– 各节点，两两通信确定可用</p>
+<p>– Block 传输结束后：</p>
+<pre><code>DN 向 NN 汇报 Block 信息
+DN 向 Client 汇报完成
+</code></pre><p>– Client 向 NN 汇报完成</p>
+<pre><code>• 获取下一个 Block 存放的 DN 列表
+• ……………..
+• 最终 Client 汇报完成
+• NN 会在写流程更新文件状态
+</code></pre><h5 id="4-2-读文件过程"><a href="#4-2-读文件过程" class="headerlink" title="4-2. 读文件过程"></a>4-2. 读文件过程</h5><p><img src="https://img-blog.csdnimg.cn/20181101235106291.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h6 id="HDFS-读流程"><a href="#HDFS-读流程" class="headerlink" title="HDFS 读流程"></a>HDFS 读流程</h6><p>– Client：</p>
+<pre><code>• 和 NN 获取一部分 Block 副本位置列表
+• 线性和 DN 获取 Block，最终合并为一个文件
+• 在 Block 副本列表中按距离择优选取
+</code></pre><h5 id="4-3-HDFS的优缺点"><a href="#4-3-HDFS的优缺点" class="headerlink" title="4-3. HDFS的优缺点"></a>4-3. HDFS的优缺点</h5><h6 id="4-3-1-优点"><a href="#4-3-1-优点" class="headerlink" title="4-3-1. 优点"></a>4-3-1. 优点</h6><p>– 高容错性</p>
+<pre><code>• 数据自动保存多个副本
+• 副本丢失后，自动恢复
+</code></pre><p>– 适合批处理</p>
+<pre><code>• 移动计算而非数据
+• 数据位置暴露给计算框架（Block 偏移量）
+</code></pre><p>– 适合大数据处理</p>
+<pre><code>• GB 、TB 、甚至 PB 级数据
+• 百万规模以上的文件数量
+• 10K+ 节点
+</code></pre><p>– 可构建在廉价机器上</p>
+<pre><code>• 通过多副本提高可靠性
+• 提供了容错和恢复机制
+</code></pre><h6 id="4-3-2-缺点"><a href="#4-3-2-缺点" class="headerlink" title="4-3-2. 缺点"></a>4-3-2. 缺点</h6><ul>
+<li>低延迟高数据吞吐访问问题</li>
+<li>比如支持秒级别反应，不支持毫秒级</li>
+<li>延迟与高吞吐率问题（吞吐量大但有限制于其延迟）</li>
+<li><p>小文件存取</p>
+<p>  • 占用 NameNode 大量内存</p>
+<pre><code>• 寻道时间超过读取时间
+</code></pre></li>
+<li><p>并发写入、文件随机修改</p>
+<p>  • 一个文件只能有一个写者</p>
+<pre><code>• 仅支持 append
+</code></pre><h2 id="三-Hadoop的搭建"><a href="#三-Hadoop的搭建" class="headerlink" title="三.Hadoop的搭建"></a>三.Hadoop的搭建</h2><h5 id="1-jdk安装-配置环境变量"><a href="#1-jdk安装-配置环境变量" class="headerlink" title="1.  jdk安装, 配置环境变量"></a>1.  jdk安装, 配置环境变量</h5><p>vi /etc/profile  (打开并修改环境变量配置的文件)</p>
+<p>  • JAVA_HOME=/opt/sxt/jdk1.7.0_75<br>  • PATH=$PATH:$JAVA_HOME/bin   (注意是冒号隔开)</p>
+<h5 id="2-ssh-免密钥（本机）以后连接本机不用再输账户密码了"><a href="#2-ssh-免密钥（本机）以后连接本机不用再输账户密码了" class="headerlink" title="2. ssh 免密钥（本机）以后连接本机不用再输账户密码了"></a>2. ssh 免密钥（本机）以后连接本机不用再输账户密码了</h5><p>  • ssh-keygen -t dsa -P ‘’ -f ~/.ssh/id_dsa<br>  • cat ~/.ssh/id_dsa.pub &gt;&gt; ~/.ssh/authorized_keys</p>
+<h5 id="3-上传-hadoop-tar-gz-到服务器"><a href="#3-上传-hadoop-tar-gz-到服务器" class="headerlink" title="3. 上传 hadoop.tar.gz 到服务器"></a>3. 上传 hadoop.tar.gz 到服务器</h5></li>
+<li>解压部署包 到/opt/sxt 目录下(目录随便选一个)</li>
+<li>vi /etc/profile (添加环境变量配置)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">•  export HADOOP_PREFIX=/opt/sxt/hadoop-2.6.5</span><br><span class="line">•  PATH=$PATH:$JAVA_HOME/bin:$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin</span><br></pre></td></tr></table></figure>
+<h5 id="4-进入-opt-sxt-hadoop-2-6-5-etc-hadoop-目录-修改几个配置"><a href="#4-进入-opt-sxt-hadoop-2-6-5-etc-hadoop-目录-修改几个配置" class="headerlink" title="4. 进入  /opt/sxt/hadoop-2.6.5/etc/hadoop 目录,修改几个配置"></a>4. 进入  /opt/sxt/hadoop-2.6.5/etc/hadoop 目录,修改几个配置</h5><h6 id="修改-hadoop-env-sh-文件-vim-hadoop-env-sh"><a href="#修改-hadoop-env-sh-文件-vim-hadoop-env-sh" class="headerlink" title="-修改  hadoop-env.sh 文件: vim  hadoop-env.sh"></a>-修改  hadoop-env.sh 文件: vim  hadoop-env.sh</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JAVA_HOME=/opt/sxt/jdk1.7.0_75</span><br></pre></td></tr></table></figure>
+<h6 id="core-site-xml"><a href="#core-site-xml" class="headerlink" title="- core-site.xml"></a>- core-site.xml</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">	&lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">	&lt;value&gt;hdfs://192.168.56.123:9000&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">	&lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">	&lt;value&gt;/var/sxt/hadoop/local&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<h6 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="- hdfs-site.xml"></a>- hdfs-site.xml</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--有个值为1,因为DataNode就一个--&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">	&lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">	&lt;value&gt;1&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">	&lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt;</span><br><span class="line">	&lt;value&gt;192.168.56.123:50090&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<p>如果要修改每个文件默认的切分大小(Block块,默认为128M),加个配置就行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--里面的值为1M,大小为字节数1024*1024,不能直接写1M或1m--&gt;</span><br><span class="line">&lt;property&gt;  </span><br><span class="line">     &lt;name&gt;dfs.blocksize&lt;/name&gt;  </span><br><span class="line">     &lt;value&gt;1048576&lt;/value&gt;  </span><br><span class="line">&lt;/property&gt;  </span><br><span class="line">&lt;property&gt;  </span><br><span class="line">     &lt;name&gt;dfs.namenode.fs-limits.min-block-size&lt;/name&gt;  </span><br><span class="line">     &lt;value&gt;1048576&lt;/value&gt;  </span><br><span class="line"> &lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<h6 id="vi-slaves（datanode-节点）"><a href="#vi-slaves（datanode-节点）" class="headerlink" title="- vi slaves（datanode 节点）"></a>- vi slaves（datanode 节点）</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.56.123</span><br></pre></td></tr></table></figure>
+<h5 id="5-格式化"><a href="#5-格式化" class="headerlink" title="5.   格式化"></a>5.   格式化</h5><pre><code>hdfs namenode -format   (只有第一次集群启动的时候才要格式化,后面就可以不用了)
+</code></pre><h5 id="6-启动-start-dfs-sh"><a href="#6-启动-start-dfs-sh" class="headerlink" title="6.   启动 start-dfs.sh"></a>6.   启动 start-dfs.sh</h5><h5 id="7-查看服务进程启动了么？-jps-命令-正常情况会启动下面三个进程"><a href="#7-查看服务进程启动了么？-jps-命令-正常情况会启动下面三个进程" class="headerlink" title="7.  查看服务进程启动了么？ jps 命令 ,正常情况会启动下面三个进程"></a>7.  查看服务进程启动了么？ jps 命令 ,正常情况会启动下面三个进程</h5><pre><code>a) SecondaryNameNode
+b) NameNode
+c) DataNode
+d) Jps
+</code></pre><h5 id="8-访问-192-168-56-123-50070"><a href="#8-访问-192-168-56-123-50070" class="headerlink" title="8. 访问 192.168.56.123:50070"></a>8. 访问 192.168.56.123:50070</h5><pre><code>• 确保防火墙关闭（service iptables stop）  出现如下界面成功
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181102004429718.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="9-创建一个用户-也就是客户端的用户"><a href="#9-创建一个用户-也就是客户端的用户" class="headerlink" title="9. 创建一个用户,也就是客户端的用户"></a>9. 创建一个用户,也就是客户端的用户</h5><pre><code>hdfs dfs -mkdir /root
+hdfs dfs -ls /root
+</code></pre><p>创建完成后在Utilities的B t f s中生成一个root的用户<br><img src="https://img-blog.csdnimg.cn/20181102004647921.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="10-hdfs-dfs-的基本命令"><a href="#10-hdfs-dfs-的基本命令" class="headerlink" title="10.  hdfs dfs 的基本命令"></a>10.  hdfs dfs 的基本命令</h5><p>•  hdfs dfs - - put fileName[ 本地文件名 ] PATH 【s hdfs  的文件路径】</p>
+<pre><code>如: hdfs dfs -put test.txt /root  (把当前目录的test.txt上传到root下面,上传成功如下图)
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181102005114527.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>• hdfs dfs -du [-s][-h]URI[URI …] 显示文件(夹)大小.<br>•  hdfs dfs - - mkdir[- - p] <paths> 创建<br>•  hdfs dfs - - rm - - r /myhadoop1.0 删除<br>• hdfs dfs -cp [-f][-p|-p[topax]]URI[URI…]<des t="">复制文件(夹)，可以覆盖，可以保留原有权限信息</des></paths></p>
+<h6 id="11-产生-100000-条数据："><a href="#11-产生-100000-条数据：" class="headerlink" title="11. 产生 100000 条数据："></a>11. 产生 100000 条数据：</h6><pre><code>for i in `seq 100000`;do echo &quot;hello sxt $i&quot; &gt;&gt; test.txt;done
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/02/Hadoop入门/" data-id="cjnzbntya0002z0u74cekpfn6" class="article-share-link">分享</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HDFS分布式存储/">HDFS分布式存储</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HDFS集群搭建/">HDFS集群搭建</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hadoop/">hadoop</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/11/02/大型网站高并发处理Nginx-lvs/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">大型网站高并发处理Nginx+lvs</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <h1 class="blog-title">萌萌的PP</h1>
+    <h2 class="blog-subtitle">帅哥美女们 , 快来一起码代码啊!!!</h2>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://avatars0.githubusercontent.com/u/20333903?v=3&amp;s=460">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>9</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>4</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>10</strong><br>标签</div></a>
+    </div>
+
+
+
+    <div class="social-link">
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong" target="_blank" title="Github">
+          Github
+        </a>
+      
+        <a class="hvr-bounce-in" href="https://blog.csdn.net/qq_38982845" target="_blank" title="CSDN">
+          CSDN
+        </a>
+      
+    </div>
+
+    <div class="friend-link">
+      <h2>友情链接</h2>
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong/fly-tong.github.io" target="_blank" title="blog home">
+          blog home
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy;2017 - 2018 Mr Tong<br>
+      由<a href="http://hexo.io/" target="_blank">Hexo</a>强力驱动 | 
+      主题-<a href="https://github.com/ShanaMaid/hexo-theme-shana">Shana</a>
+      
+    </div>
+    
+  </div>
+</footer>
+    </div>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/wow/0.1.6/wow.min.js"></script>
+<script>
+new WOW().init();
+</script>   
+
+
+  <link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+  <script src="/plugin/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <link rel="stylesheet" href="/plugin/galmenu/GalMenu.css">
+  <script src="/plugin/galmenu/GalMenu.js"></script>
+  <div class="GalMenu GalDropDown">
+      <div class="circle" id="gal">
+        <div class="ring">
+          
+            <a href="/archives" title="" class="menuItem">首页</a>
+          
+            <a href="/tags" title="" class="menuItem">标签</a>
+          
+            <a href="/categories" title="" class="menuItem">分类</a>
+          
+            <a href="/archives" title="" class="menuItem">归档</a>
+          
+            <a href="/" title="" class="menuItem">关于</a>
+          
+            <a href="/" title="" class="menuItem">展示</a>
+          
+        </div>
+        
+          <audio id="audio" src="#"></audio>
+        
+      </div> 
+</div>
+<div id="overlay" style="opacity: 1; cursor: pointer;"></div>
+  <script type="text/javascript">var items = document.querySelectorAll('.menuItem');
+    for (var i = 0,
+    l = items.length; i < l; i++) {
+      items[i].style.left = (50 - 35 * Math.cos( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
+      items[i].style.top = (50 + 35 * Math.sin( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%"
+    }</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('body').GalMenu({
+      'menu': 'GalDropDown'
+    })
+  });
+</script>
+
+  <section class="hidden-xs"> 
+  <ul class="cb-slideshow"> 
+    <li><span>苟利</span></li> 
+    <li><span>国家</span></li> 
+    <li><span>生死以</span></li> 
+    <li><span>岂能</span></li> 
+    <li><span>祸福</span></li> 
+    <li><span>趋避之</span></li> 
+  </ul>
+</section>
+<script src="/js/script.js"></script>
+
+
+
+
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.article-title').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>
