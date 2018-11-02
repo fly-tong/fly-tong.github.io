@@ -22,12 +22,13 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/201810302341163.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181030234202738.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181030234356428.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181101192528372.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181030234639705.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181030235146161.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181030235441743.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/2018103100022765.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181031000240613.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2018-10-30T16:12:21.525Z">
+<meta property="og:updated_time" content="2018-11-02T01:13:06.932Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux进阶命令">
 <meta name="twitter:description" content="一. Linux基础命令1. 新建文件touch web.log 创建一个名为web.log空文件  2.复制文件cp web.log web_cp.log  复制文件，加个-r 参数，代表遍历复制，此时可用于复制一个 目录。 3.删除文件rm m web_cp.log 4.查看文件cat filename: 一次性显示整个文件的内容 more filename 该命令一次显示一屏文本，满屏后停下">
@@ -217,7 +218,13 @@ vi /etc/hosts  (后面有s的)
 系统会从左往右依次寻找对应的程序，有的话则运行该程序，没有的就报错，command not found.
 查看path的命令   echo $path  (echo相当于输出语法一样)
 </code></pre><p><img src="https://img-blog.csdnimg.cn/20181030234356428.png" alt="在这里插入图片描述"></p>
-<h5 id="4-linux服务操作"><a href="#4-linux服务操作" class="headerlink" title="4.linux服务操作"></a>4.linux服务操作</h5><h6 id="列出所有服务"><a href="#列出所有服务" class="headerlink" title="列出所有服务"></a>列出所有服务</h6><pre><code>chkconfig
+<pre><code>具体配置的操作:  vim  /etc/profile    (修改环境变量的地方,打开进入编辑模式就行)
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 配置jdk环境变量</span><br><span class="line">JAVA_HOME=/root/Desktop/java/jdk/jdk1.7.0_75</span><br><span class="line"># 配置tomcat的环境变量</span><br><span class="line">TOMCAT=/root/Desktop/tomcat/apache-tomcat-7.0.91</span><br><span class="line"># 配置nginx</span><br><span class="line">NGINX=/usr/software/nginx</span><br><span class="line">PATH=$PATH:$JAVA_HOME/bin:$TOMCAT/bin:$NGINX/sbin</span><br></pre></td></tr></table></figure>
+<p>加入的位置大概如下:<br><img src="https://img-blog.csdnimg.cn/20181101192528372.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>配置完成过后保存并退出,并生效配置:  </p>
+<pre><code>source  /etc/profile
+验证:在任意位置输入  jps 命令,或任意地方启动,关闭tomcat等等都能完成; 如:就不用跑到tomcat的bin目录下启动tomcat了./startup.sh
+而现在只要在任意目录下启动即可 startup.sh
+</code></pre><h5 id="4-linux服务操作"><a href="#4-linux服务操作" class="headerlink" title="4.linux服务操作"></a>4.linux服务操作</h5><h6 id="列出所有服务"><a href="#列出所有服务" class="headerlink" title="列出所有服务"></a>列出所有服务</h6><pre><code>chkconfig
 查询操作系统在每一个执行等级中会执行哪些系统服务，其中包括各类常驻服务。
 </code></pre><p><img src="https://img-blog.csdnimg.cn/20181030234639705.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <pre><code>各数字代表的系统初始化级别含义：
@@ -233,6 +240,17 @@ vi /etc/hosts  (后面有s的)
 
 这些级别中 1、2、4 很少用，相对而言 0、3、5、6 用的会较多。3 级别和 5 级别除了桌面相关的进程外没有什么区别。为了减少资源占用，推荐都用 3 级别.
 注意 ：linux 默认级别为 3，不要把 initdefault 设置为 0 和 6
+</code></pre><h6 id="图形界面设置"><a href="#图形界面设置" class="headerlink" title="图形界面设置"></a>图形界面设置</h6><pre><code>1.关闭图形界面
+init 3 关闭图形界面（XServer服务也会关闭）
+
+2. 开启图形界面：
+init 5 或  startx
+
+3. 开机时，不进入 X Window：
+vi /etc/inittab
+id:5:initdefault:
+改成
+id:3:initdefault:
 </code></pre><h6 id="服务操作"><a href="#服务操作" class="headerlink" title="服务操作"></a>服务操作</h6><pre><code>service 服务名 start/stop/status/restart
 例子：对防火墙服务进行操作，防火墙的服务名为：iptables.查看防火墙服务运行状态。
 </code></pre><h6 id="服务初执行等级更改"><a href="#服务初执行等级更改" class="headerlink" title="服务初执行等级更改"></a>服务初执行等级更改</h6><pre><code>chkconfig --level 2345 name off|on 
@@ -269,7 +287,7 @@ wget 用法:wget [option] 网址 -O 指定下载保存的路径
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/31/Linux进阶命令/" data-id="cjnzbnty10000z0u7hvkwrkff" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/10/31/Linux进阶命令/" data-id="cjnzbtkis0002p4u7bhh1w124" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux的进阶命令/">linux的进阶命令</a></li></ul>
