@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>全文检索技术Lucene | 萌萌的PP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一. Lucene  简介1. Lucene  是什么Lucene 是一个开放源代码的全文检索引擎工具包，但它不是一个完整的全文检索引擎，而是一个全文检索引擎的架构，提供了完整的查询引擎和索引引擎，部分文本分析引擎。说到底它是一个信息检索程序库，而不是应用产品。因此它并不像百度或者 google 那样，拿来就能用，它只是提供了一种工具让你能实现这些产品。 2 . Lucene  能做什么要回答这个">
+<meta name="keywords" content="全文检索技术Lucene,快速搜索技术Lucene">
+<meta property="og:type" content="article">
+<meta property="og:title" content="全文检索技术Lucene">
+<meta property="og:url" content="http://yoursite.com/2018/11/03/全文检索技术Lucene/index.html">
+<meta property="og:site_name" content="萌萌的PP">
+<meta property="og:description" content="一. Lucene  简介1. Lucene  是什么Lucene 是一个开放源代码的全文检索引擎工具包，但它不是一个完整的全文检索引擎，而是一个全文检索引擎的架构，提供了完整的查询引擎和索引引擎，部分文本分析引擎。说到底它是一个信息检索程序库，而不是应用产品。因此它并不像百度或者 google 那样，拿来就能用，它只是提供了一种工具让你能实现这些产品。 2 . Lucene  能做什么要回答这个">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181102191025500.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181102191108118.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181102191131374.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103111125952.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103112826150.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2018-11-03T04:00:46.545Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="全文检索技术Lucene">
+<meta name="twitter:description" content="一. Lucene  简介1. Lucene  是什么Lucene 是一个开放源代码的全文检索引擎工具包，但它不是一个完整的全文检索引擎，而是一个全文检索引擎的架构，提供了完整的查询引擎和索引引擎，部分文本分析引擎。说到底它是一个信息检索程序库，而不是应用产品。因此它并不像百度或者 google 那样，拿来就能用，它只是提供了一种工具让你能实现这些产品。 2 . Lucene  能做什么要回答这个">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181102191025500.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+  
+    <link rel="alternate" href="/atom.xml" title="萌萌的PP" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/plugin/bganimation/bg.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <div class="widget-wrap mobile-header">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://avatars0.githubusercontent.com/u/20333903?v=3&amp;s=460">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>10</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>4</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>12</strong><br>标签</div></a>
+    </div>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+        <section id="main"><article id="post-全文检索技术Lucene" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/03/全文检索技术Lucene/" class="article-date">
+  <time class="post-time" datetime="2018-11-03T03:52:00.000Z" itemprop="datePublished">
+    <span class="post-month">11月</span><br/>
+    <span class="post-day">03</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      全文检索技术Lucene
+    </h1>
+  
+
+        <div>
+          
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/大数据技术/">大数据技术</a>
+  </div>
+
+          
+              
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/11/03/全文检索技术Lucene/" class="leancloud_visitors" data-flag-title="全文检索技术Lucene">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-Lucene-简介"><a href="#一-Lucene-简介" class="headerlink" title="一. Lucene  简介"></a>一. Lucene  简介</h2><h4 id="1-Lucene-是什么"><a href="#1-Lucene-是什么" class="headerlink" title="1. Lucene  是什么"></a>1. Lucene  是什么</h4><p>Lucene 是一个开放源代码的全文检索引擎工具包，但它不是一个完整的全文检索引擎，而是一个全文检索引擎的架构，提供了完整的查询引擎和索引引擎，部分文本分析引擎。说到底它是一个信息检索程序库，而不是应用产品。因此它并不像百度或者 google 那样，拿来就能用，它只是提供了一种工具让你能实现这些产品。</p>
+<h4 id="2-Lucene-能做什么"><a href="#2-Lucene-能做什么" class="headerlink" title="2 . Lucene  能做什么"></a>2 . Lucene  能做什么</h4><p>要回答这个问题，先要了解 lucene 的本质。实际上 lucene 的功能很单一，说到底，就是我们给它若干个字符串，然后它为我们提供一个全文搜索服务，最后告诉我们要搜索的关键词出现在哪里。知道了这个本质，我们就可以发挥想象做任何符合这个条件的事情了。比如我们可以把站内新闻都索引了，做个资料库；也可以把一个数据库表的若干个字段索引起来，那就不用再担心因为“%like%”而锁表了；学完 lucene,你也可以写个自己的搜索引擎了……</p>
+<h4 id="3-Lucene-速度测试"><a href="#3-Lucene-速度测试" class="headerlink" title="3 . Lucene  速度测试"></a>3 . Lucene  速度测试</h4><p>下面给出一些测试数据，如果你觉得可以接受，那么可以选择。<br>测试一：250 万记录，300M 左右文本，生成索引 380M 左右，800 线程下平均处理时间 300ms。<br>测试二：37000 记录，索引数据库中的两个 varchar 字段，索引文件2.6M，800 线程下平均处理时间 1.5ms。</p>
+<h2 id="二-深入lucene"><a href="#二-深入lucene" class="headerlink" title="二. 深入lucene"></a>二. 深入lucene</h2><h4 id="1-为什么-lucene-这么快"><a href="#1-为什么-lucene-这么快" class="headerlink" title="1. 为什么 lucene  这么快"></a>1. 为什么 lucene  这么快</h4><pre><code>1、倒排索引
+2、压缩算法
+3、二元搜索
+</code></pre><h4 id="2-倒排序索引"><a href="#2-倒排序索引" class="headerlink" title="2. 倒排序索引"></a>2. 倒排序索引</h4><pre><code>它是根据属性的值来查找记录。
+这种索引表中的每一项都包括一个属性值和具有该属性值的各记录的地址由于不是由记录来确定属性值，
+而是由属性值来确定记录的位置，因而称为倒排索引(invertedindex) 如下简单的例子
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181102191025500.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="3-工作方式"><a href="#3-工作方式" class="headerlink" title="3. 工作方式"></a>3. 工作方式</h4><p>Lucene 提供的服务实际包含两部分：一入一出。所谓入是写入，即将你提供的源（本质是字符串）写入索引或者将其从索引中删除；所谓出是读出，即向用户提供全文搜索服务，让用户可以通过关键词定位源。</p>
+<h4 id="4-写入流程"><a href="#4-写入流程" class="headerlink" title="4. 写入流程"></a>4. 写入流程</h4><ul>
+<li>源字符串首先经过 analyzer 处理，包括：分词，分成一个个单词去除 stopword（可选）。</li>
+<li>将源中需要的信息加入 Document 的各个 Field（信息域）中，并把需要索引的 Field 索引起来，把需要存储的 Field 存储起来。</li>
+<li>将索引写入磁盘。<h4 id="5-读出流程"><a href="#5-读出流程" class="headerlink" title="5. 读出流程"></a>5. 读出流程</h4></li>
+<li>用户提供搜索关键词，经过 analyzer 处理。</li>
+<li>对处理后的关键词搜索它的索引，找出对应的 Document。</li>
+<li>用户根据需要从找到的 Document 中提取需要的 Field。<h4 id="6-Docement"><a href="#6-Docement" class="headerlink" title="6. Docement"></a>6. Docement</h4>用户提供的源是一条条记录，它们可以是文本文件, 字符串或者数据库表的一条记录等等。一条记录经过索引之后，就是以一个Document 的形式存储在索引文件中的, 用户进行搜索也是以Document 列表的形式返回。<h4 id="7-Field"><a href="#7-Field" class="headerlink" title="7. Field"></a>7. Field</h4>一个 Document 可以包含多个信息域，例如一篇文章可以包含“标题”、“正文”、“最后修改时间”等信息域，这些信息域就是通过 Field在 Document 中存储的。Field 有两个属性可选：存储和索引。通过存储属性你可以控制是否对这个 Field 进行存储；通过索引属性你可以控制是否对该Field 进行索引。这看起来似乎有些废话，事实上对这两个属性的正确组合很重要。<h4 id="8-实现原理"><a href="#8-实现原理" class="headerlink" title="8. 实现原理"></a>8. 实现原理</h4><h6 id="文本倒排处理："><a href="#文本倒排处理：" class="headerlink" title="文本倒排处理："></a>文本倒排处理：</h6><img src="https://img-blog.csdnimg.cn/20181102191108118.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h6 id="Lucene-整体使用如图所示："><a href="#Lucene-整体使用如图所示：" class="headerlink" title="Lucene 整体使用如图所示："></a>Lucene 整体使用如图所示：</h6><img src="https://img-blog.csdnimg.cn/20181102191131374.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h4 id="9-环境配置"><a href="#9-环境配置" class="headerlink" title="9. 环境配置"></a>9. 环境配置</h4><h6 id="9-1-下载jar包的方式"><a href="#9-1-下载jar包的方式" class="headerlink" title="9-1 下载jar包的方式"></a>9-1 下载jar包的方式</h6>  下载 lucene jar<br>  官网：<a href="https://lucene.apache.org/" target="_blank" rel="noopener">https://lucene.apache.org/</a><br>  导入 jar 到项目中<br>  我下载的为7-5-0版本的zip,架包引入下面依赖中的jar就行,但是org.apache.commons.io<br>  必须从依赖库里面引入,本人建议你可以建个maven项目,然后只引入org.apache.commons.io<br>  依赖,其他的几个直接把你下载的zip解压,找到里面的对应架包引入就行,因为maven库里面的版本较低<h6 id="9-2或者加入依赖-相关依赖如下"><a href="#9-2或者加入依赖-相关依赖如下" class="headerlink" title="9-2或者加入依赖,相关依赖如下:"></a>9-2或者加入依赖,相关依赖如下:</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">      &lt;!--测试环境--&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;junit&lt;<span class="regexp">/groupId&gt;</span></span><br><span class="line"><span class="regexp">            &lt;artifactId&gt;junit&lt;/</span>artifactId&gt;</span><br><span class="line">            &lt;version&gt;<span class="number">4.12</span>&lt;<span class="regexp">/version&gt;</span></span><br><span class="line"><span class="regexp">            &lt;scope&gt;compile&lt;/</span>scope&gt;</span><br><span class="line">        &lt;<span class="regexp">/dependency&gt;</span></span><br><span class="line"><span class="regexp">        </span></span><br><span class="line"><span class="regexp">        &lt;!-- https:/</span><span class="regexp">/mvnrepository.com/</span>artifact/org.apache.directory.studio/org.apache.commons.io --&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.directory.studio&lt;<span class="regexp">/groupId&gt;</span></span><br><span class="line"><span class="regexp">            &lt;artifactId&gt;org.apache.commons.io&lt;/</span>artifactId&gt;</span><br><span class="line">            &lt;version&gt;<span class="number">2.4</span>&lt;<span class="regexp">/version&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>dependency&gt;</span><br><span class="line">       </span><br><span class="line">       &lt;!-- http:<span class="comment">//mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-common --&gt;</span></span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;org.apache.lucene&lt;<span class="regexp">/groupId&gt;</span></span><br><span class="line"><span class="regexp">           &lt;artifactId&gt;lucene-analyzers-common&lt;/</span>artifactId&gt;</span><br><span class="line">           &lt;version&gt;<span class="number">4.10</span><span class="number">.3</span>&lt;<span class="regexp">/version&gt;</span></span><br><span class="line"><span class="regexp">       &lt;/</span>dependency&gt;</span><br><span class="line">       </span><br><span class="line">       &lt;!-- http:<span class="comment">//mvnrepository.com/artifact/org.apache.lucene/lucene-queryparser --&gt;</span></span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;org.apache.lucene&lt;<span class="regexp">/groupId&gt;</span></span><br><span class="line"><span class="regexp">           &lt;artifactId&gt;lucene-queryparser&lt;/</span>artifactId&gt;</span><br><span class="line">           &lt;version&gt;<span class="number">4.10</span><span class="number">.3</span>&lt;<span class="regexp">/version&gt;</span></span><br><span class="line"><span class="regexp">       &lt;/</span>dependency&gt;</span><br><span class="line">      </span><br><span class="line">       &lt;!-- http:<span class="comment">//mvnrepository.com/artifact/org.apache.lucene/lucene-core --&gt;</span></span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;org.apache.lucene&lt;<span class="regexp">/groupId&gt;</span></span><br><span class="line"><span class="regexp">           &lt;artifactId&gt;lucene-core&lt;/</span>artifactId&gt;</span><br><span class="line">           &lt;version&gt;<span class="number">4.10</span><span class="number">.3</span>&lt;<span class="regexp">/version&gt;</span></span><br><span class="line"><span class="regexp">       &lt;/</span>dependency&gt;</span><br><span class="line">&lt;<span class="regexp">/dependencies&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="10-创建索引"><a href="#10-创建索引" class="headerlink" title="10.  创建索引"></a>10.  创建索引</h4><h6 id="Lucene的最重要的工作流程就是先给你查询的东西创建索引-也即给你要查询的数据按照Lucene的方式创建索引-这样才会搜索的更快-使用第一步让我们给数据创建索引-直接上代码啦-注释写的比较啰嗦"><a href="#Lucene的最重要的工作流程就是先给你查询的东西创建索引-也即给你要查询的数据按照Lucene的方式创建索引-这样才会搜索的更快-使用第一步让我们给数据创建索引-直接上代码啦-注释写的比较啰嗦" class="headerlink" title="==Lucene的最重要的工作流程就是先给你查询的东西创建索引,也即给你要查询的数据按照Lucene的方式创建索引,这样才会搜索的更快,使用第一步让我们给数据创建索引,直接上代码啦!!! 注释写的比较啰嗦.=="></a>==Lucene的最重要的工作流程就是先给你查询的东西创建索引,也即给你要查询的数据按照Lucene的方式创建索引,这样才会搜索的更快,使用第一步让我们给数据创建索引,直接上代码啦!!! 注释写的比较啰嗦.==</h6><p>两个成员变量:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要搜索的目录路径</span></span><br><span class="line"><span class="built_in">String</span> pathSearch = <span class="string">"C://Users//威威//Desktop//课堂内容//第15周//day 5"</span>;</span><br><span class="line"><span class="comment">//索引要存放的路径</span></span><br><span class="line"><span class="built_in">String</span> pathIndex = <span class="string">"C://Users//威威//Desktop//课堂内容//第16周//day 5//testLucene"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>正式的建索引代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createIndex</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//索引存放的目录文件夹</span></span><br><span class="line">        File indexRepositoryFile = <span class="keyword">new</span> File(pathIndex);</span><br><span class="line">        <span class="comment">//得到目录的文件路径(不能直接用上面的path,不然会报错)</span></span><br><span class="line">        Path directoryPath = indexRepositoryFile.toPath();</span><br><span class="line">        <span class="comment">//lucene进行搜索的目录</span></span><br><span class="line">        Directory directory = FSDirectory.open(directoryPath);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//准备你想要搜索的目录文件</span></span><br><span class="line">        File searchFiles = <span class="keyword">new</span> File(pathSearch);</span><br><span class="line">        <span class="comment">//获取一个标准分词器</span></span><br><span class="line">        Analyzer analyzer = <span class="keyword">new</span> StandardAnalyzer();</span><br><span class="line">        <span class="comment">//配置indexWriterConfig</span></span><br><span class="line">        <span class="comment">//IndexWriterConfig indexWConfig = new IndexWriterConfig();</span></span><br><span class="line">        IndexWriterConfig indexWConfig = <span class="keyword">new</span> IndexWriterConfig(analyzer);</span><br><span class="line">        <span class="comment">//指定索引写入的模式</span></span><br><span class="line">        indexWConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);</span><br><span class="line">        <span class="comment">//通过索引目录与配置信息得到writer</span></span><br><span class="line">        IndexWriter writer = <span class="keyword">new</span> IndexWriter(directory, indexWConfig);</span><br><span class="line">        <span class="comment">//遍历读取文件目录pathSearch里的所有文件,非常重要,如果直接遍历杜会报错(文件存在,但它是个目录)</span></span><br><span class="line">        Collection&lt;File&gt; files = FileUtils.listFiles(searchFiles, TrueFileFilter.INSTANCE,TrueFileFilter.INSTANCE);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//遍历读取目录里的所有文件</span></span><br><span class="line">        <span class="keyword">for</span>(File file : files)&#123;</span><br><span class="line">            <span class="comment">//得到文件名</span></span><br><span class="line">            String fileName = file.getName();</span><br><span class="line">            <span class="comment">//文件内容</span></span><br><span class="line">            String fileContent = FileUtils.readFileToString(file);</span><br><span class="line">            <span class="comment">//文件路径</span></span><br><span class="line">            String filePath = file.getPath();</span><br><span class="line">            <span class="comment">//文件大小</span></span><br><span class="line">            Long fileSize = FileUtils.sizeOf(file);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//创建一个document对象</span></span><br><span class="line">            Document document = <span class="keyword">new</span> Document();</span><br><span class="line">            <span class="comment">// 向Document对象中添加域信息</span></span><br><span class="line">            <span class="comment">// 参数：1、域的名称；2、域的值；3、是否存储；</span></span><br><span class="line">            Field nameField = <span class="keyword">new</span> TextField(<span class="string">"name"</span>,fileName,Store.YES );</span><br><span class="line">            Field contentField = <span class="keyword">new</span> TextField(<span class="string">"content"</span>, fileContent, Store.YES);</span><br><span class="line">            <span class="comment">// storedFiled默认存储</span></span><br><span class="line">            Field pathField = <span class="keyword">new</span> StoredField(<span class="string">"path"</span>,filePath );</span><br><span class="line">            Field sizeField = <span class="keyword">new</span> StoredField(<span class="string">"size"</span>,fileSize );</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 将域添加到document对象中</span></span><br><span class="line">            document.add(nameField);</span><br><span class="line">            document.add(contentField);</span><br><span class="line">            document.add(pathField);</span><br><span class="line">            document.add(sizeField);</span><br><span class="line">            <span class="comment">//将信息写入到检索库中</span></span><br><span class="line">            writer.addDocument(document);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//关闭indexWriter</span></span><br><span class="line">        writer.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>点击运行会在你索引目录生成索引文件:<br><img src="https://img-blog.csdnimg.cn/20181103111125952.png" alt="在这里插入图片描述"></p>
+<h4 id="11-查询索引"><a href="#11-查询索引" class="headerlink" title="11. 查询索引"></a>11. 查询索引</h4><h6 id="上面索引建立好了-此时你要全文检索-检索已经建好索引的目录就行了-不再索引源文件的目录"><a href="#上面索引建立好了-此时你要全文检索-检索已经建好索引的目录就行了-不再索引源文件的目录" class="headerlink" title="上面索引建立好了,此时你要全文检索,检索已经建好索引的目录就行了,不再索引源文件的目录."></a>上面索引建立好了,此时你要全文检索,检索已经建好索引的目录就行了,不再索引源文件的目录.</h6><p>正式搜索代码:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">    public <span class="keyword">void</span> search() throws IOException, ParseException &#123;</span><br><span class="line">        <span class="comment">//指定索引的目录并打开,路径不能直接给,必须转化一下</span></span><br><span class="line">        File file = <span class="keyword">new</span> File(pathIndex);</span><br><span class="line">        Path path = file.toPath();</span><br><span class="line">        Directory directory = FSDirectory.open(path);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//得到一个基础分词器,查询也需要分词操作,假如用户输入的内容很长</span></span><br><span class="line">        Analyzer analyzer = <span class="keyword">new</span> StandardAnalyzer();</span><br><span class="line"></span><br><span class="line">        IndexReader indexReader = DirectoryReader.open(directory);</span><br><span class="line">        <span class="comment">//创建IndexSearch对象</span></span><br><span class="line">        IndexSearcher indexSearcher = <span class="keyword">new</span> IndexSearcher(indexReader);</span><br><span class="line">        <span class="comment">//创建一个分析器</span></span><br><span class="line">        QueryParser parser = <span class="keyword">new</span> QueryParser(<span class="string">"content"</span>,analyzer);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//要查询的东西</span></span><br><span class="line">        Query query = parser.parse(<span class="string">"用"</span>);</span><br><span class="line">        <span class="comment">/*// 创建一个查询对象</span></span><br><span class="line"><span class="comment">        TermQuery termQuery = new TermQuery(new Term("name", "crm"));*/</span></span><br><span class="line">        <span class="comment">// 执行查询</span></span><br><span class="line">        <span class="comment">// 返回的最大值，在分页的时候使用</span></span><br><span class="line">        TopDocs topDocs = indexSearcher.search(query, <span class="number">10</span>);</span><br><span class="line">        <span class="comment">// 取查询结果总数量</span></span><br><span class="line">        System.out.println(<span class="string">"总共的查询结果："</span> + topDocs.totalHits);</span><br><span class="line">        <span class="comment">// 查询结果，就是documentID列表</span></span><br><span class="line">        ScoreDoc[] scoreDocs = topDocs.scoreDocs;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (ScoreDoc scoreDoc : scoreDocs) &#123;</span><br><span class="line">            <span class="comment">// 取对象document的对象id</span></span><br><span class="line">            int docID = scoreDoc.doc;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 相关度得分</span></span><br><span class="line">            float score = scoreDoc.score;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 根据ID去document对象</span></span><br><span class="line">            Document <span class="built_in">document</span> = indexSearcher.doc(docID);</span><br><span class="line"></span><br><span class="line">            <span class="comment">/*System.out.println("相关度得分：" + score);</span></span><br><span class="line"><span class="comment">            System.out.println("");</span></span><br><span class="line"><span class="comment">            System.out.println("文件的名字: "+document.get("name"));</span></span><br><span class="line"><span class="comment">            System.out.println("");*/</span></span><br><span class="line">            <span class="comment">// 另外的一种使用方法</span></span><br><span class="line">            System.out.println(<span class="built_in">document</span>.getField(<span class="string">"content"</span>).stringValue());</span><br><span class="line">            System.out.println(<span class="built_in">document</span>.get(<span class="string">"path"</span>));</span><br><span class="line">            System.out.println();</span><br><span class="line">            System.out.println(<span class="string">"======================="</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        indexReader.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="12-Lucene的其他功能"><a href="#12-Lucene的其他功能" class="headerlink" title="12. Lucene的其他功能"></a>12. Lucene的其他功能</h4><h5 id="12-1-分词器"><a href="#12-1-分词器" class="headerlink" title="12-1 分词器"></a>12-1 分词器</h5><p>Lucene 自带的 StandardAnalyzer 分词器，只能对英语进行分词。<br>在对中文进行分词的时候采用了一元分词，即每一个中文作为一个词，<br>如“我是中国人”，则分词结果为“我”，“是”，“中”，“国”，“人”，<br>可以看出分词效果很差。在这里推荐一个比较好用的中文分词器<br>IKAnalyzer。</p>
+<h5 id="12-2-停用词"><a href="#12-2-停用词" class="headerlink" title="12-2 停用词"></a>12-2 停用词</h5><p>停用词是指在信息检索中，为节省存储空间和提高搜索效率，在<br>处理自然语言数据（或文本）之前或之后会自动过滤掉某些字或词，<br>这些字或词即被称为 Stop Words（停用词）。比如中文中“了”， “么”，</p>
+<p>“呢”，“的”等意义不大且在一篇文章中出现频率又很高的词，又比<br>如英文中的”for”,”in”,”it”,”a”,”or”等词。<br>在使用 IKAnalyzer 分词器的时候，可以在 IKAnalyzer.cfg.xml<br>里配置相关信息，如下图：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;comment&gt;IK Analyzer 扩展配置&lt;/comment&gt;</span><br><span class="line">    &lt;!--用户在这可以配置自己的扩展字典--&gt;</span><br><span class="line">    &lt;entry key="ext_dict"&gt;ext_dict;&lt;/entry&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;!--用户可以在这里配置自己的停止词字典--&gt;</span><br><span class="line">    &lt;entry key="ext_stopwords"&gt;stopword.dic;chinese_stopword.dic&lt;/entry&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="12-2-高亮-Highlighter"><a href="#12-2-高亮-Highlighter" class="headerlink" title="12-2 高亮-Highlighter"></a>12-2 高亮-Highlighter</h5><p>高亮是什么?来看一下百度就知道了<br><img src="https://img-blog.csdnimg.cn/20181103112826150.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>红色的就是关键词高亮显示了,引入里面的高亮jar包就行了,自己可以设置.</p>
+<h2 id="三-Lucene相关概念补充"><a href="#三-Lucene相关概念补充" class="headerlink" title="三. Lucene相关概念补充"></a>三. Lucene相关概念补充</h2><h4 id="1-Field属性"><a href="#1-Field属性" class="headerlink" title="1. Field属性"></a>1. Field属性</h4><p>Field 是文档中的域，包括 Field 名和 Field 值两部分，一个文档可以包括多个 Field，Document 只是 Field 的一个承载体，Field值即为要索引的内容，也是要搜索的内容。</p>
+<ul>
+<li>是否分词(tokenized)<ul>
+<li>是：作分词处理，即将 Field 值进行分词，分词的目的是为了索引。比如：商品名称、商品简介等，这些内容用户要输入关键字搜索，由于搜索的内容格式大、内容多需要分词后将语汇单元索引。</li>
+<li>否：不作分词处理比如：商品 id、订单号、身份证号等</li>
+</ul>
+</li>
+<li>是否索引(indexed)<ul>
+<li>是：进行索引。将 Field 分词后的词或整个 Field 值进行索引，索引的目的是为了搜索比如：商品名称、商品简介分词后进行索引，订单号、身份证号不用分词但也要索引，这些将来都要作为查询条件。</li>
+<li>否：不索引。该域的内容无法搜索到比如：商品 id、文件路径、图片路径等，不用作为查询条件的不用索引。</li>
+</ul>
+</li>
+<li>是否存储(stored)<ul>
+<li>是：将 Field 值存储在文档中，存储在文档中的 Field 才可以从<br>Document 中获取。比如：商品名称、订单号，凡是将来要从 Document 中获取的 Field都要存储。</li>
+<li>否：不存储 Field 值，不存储的 Field 无法通过 Document 获取<br>比如：商品简介，内容较大不用存储。如果要向用户展示商品简介可以从系统的关系数据库中获取商品简介。如果需要商品描述，则根据搜索出的商品 ID 去数据库中查询，然后显示出商品描述信息即可。<h4 id="2-Field-常用类型"><a href="#2-Field-常用类型" class="headerlink" title="2. Field 常用类型"></a>2. Field 常用类型</h4>开发中常用 的 Filed 类型，注意 Field 的属性，根据需求选择：<br><a href="https://img-blog.csdnimg.cn/20181103113942512.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" target="_blank" rel="noopener">https://img-blog.csdnimg.cn/20181103113942512.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70</a><h4 id="3-例子"><a href="#3-例子" class="headerlink" title="3. 例子"></a>3. 例子</h4></li>
+</ul>
+</li>
+<li>图书 id：<ul>
+<li>是否分词：不用分词，因为不会根据商品 id 来搜索商品</li>
+<li>是否索引：不索引，因为不需要根据图书 ID 进行搜索</li>
+<li>是否存储：要存储，因为查询结果页面需要使用 id 这个值</li>
+</ul>
+</li>
+<li>图书名称：<ul>
+<li>是否分词：要分词，因为要将图书的名称内容分词索引，根据关键搜索图书名称抽取的词。</li>
+<li>是否索引：要索引。</li>
+<li>是否存储：要存储</li>
+</ul>
+</li>
+<li>图书价格：<ul>
+<li>是否分词：要分词，lucene 对数字型的值只要有搜索需求的都要分词和索引，因为 lucene 对数字型的内容要特殊分词处理，本例子可能要根据价格范 围搜索，需要分词和索引。</li>
+<li>是否索引：要索引</li>
+<li>是否存储：要存储</li>
+</ul>
+</li>
+<li>图书图片地址：<ul>
+<li>是否分词：不分词</li>
+<li>是否索引：不索引</li>
+<li>是否存储：要存储</li>
+</ul>
+</li>
+<li>图书描述：<ul>
+<li>是否分词：要分词</li>
+<li>是否索引：要索引</li>
+<li>是否存储：因为图书描述内容量大，不在查询结果页面直接显示，不存储。 不存储是来不在 lucene 的索引文件中记录，节省 lucene的索引文件空间， 如果要在详情页面显示描述，思路： 从 lucene中取出图书的 id，根据图书的 id 查询关系数据库中 book 表 得到描述信息。</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/03/全文检索技术Lucene/" data-id="cjo0x7pcy000beou7jt9qhi62" class="article-share-link">分享</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/全文检索技术Lucene/">全文检索技术Lucene</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/快速搜索技术Lucene/">快速搜索技术Lucene</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/11/02/Hadoop入门/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Hadoop入门</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <h1 class="blog-title">萌萌的PP</h1>
+    <h2 class="blog-subtitle">帅哥美女们 , 快来一起码代码啊!!!</h2>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://avatars0.githubusercontent.com/u/20333903?v=3&amp;s=460">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>10</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>4</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>12</strong><br>标签</div></a>
+    </div>
+
+
+
+    <div class="social-link">
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong" target="_blank" title="Github">
+          Github
+        </a>
+      
+        <a class="hvr-bounce-in" href="https://blog.csdn.net/qq_38982845" target="_blank" title="CSDN">
+          CSDN
+        </a>
+      
+    </div>
+
+    <div class="friend-link">
+      <h2>友情链接</h2>
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong/fly-tong.github.io" target="_blank" title="blog home">
+          blog home
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy;2017 - 2018 Mr Tong<br>
+      由<a href="http://hexo.io/" target="_blank">Hexo</a>强力驱动 | 
+      主题-<a href="https://github.com/ShanaMaid/hexo-theme-shana">Shana</a>
+      
+    </div>
+    
+  </div>
+</footer>
+    </div>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/wow/0.1.6/wow.min.js"></script>
+<script>
+new WOW().init();
+</script>   
+
+
+  <link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+  <script src="/plugin/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <link rel="stylesheet" href="/plugin/galmenu/GalMenu.css">
+  <script src="/plugin/galmenu/GalMenu.js"></script>
+  <div class="GalMenu GalDropDown">
+      <div class="circle" id="gal">
+        <div class="ring">
+          
+            <a href="/archives" title="" class="menuItem">首页</a>
+          
+            <a href="/tags" title="" class="menuItem">标签</a>
+          
+            <a href="/categories" title="" class="menuItem">分类</a>
+          
+            <a href="/archives" title="" class="menuItem">归档</a>
+          
+            <a href="/" title="" class="menuItem">关于</a>
+          
+            <a href="/" title="" class="menuItem">展示</a>
+          
+        </div>
+        
+          <audio id="audio" src="#"></audio>
+        
+      </div> 
+</div>
+<div id="overlay" style="opacity: 1; cursor: pointer;"></div>
+  <script type="text/javascript">var items = document.querySelectorAll('.menuItem');
+    for (var i = 0,
+    l = items.length; i < l; i++) {
+      items[i].style.left = (50 - 35 * Math.cos( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
+      items[i].style.top = (50 + 35 * Math.sin( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%"
+    }</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('body').GalMenu({
+      'menu': 'GalDropDown'
+    })
+  });
+</script>
+
+  <section class="hidden-xs"> 
+  <ul class="cb-slideshow"> 
+    <li><span>苟利</span></li> 
+    <li><span>国家</span></li> 
+    <li><span>生死以</span></li> 
+    <li><span>岂能</span></li> 
+    <li><span>祸福</span></li> 
+    <li><span>趋避之</span></li> 
+  </ul>
+</section>
+<script src="/js/script.js"></script>
+
+
+
+
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.article-title').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>
