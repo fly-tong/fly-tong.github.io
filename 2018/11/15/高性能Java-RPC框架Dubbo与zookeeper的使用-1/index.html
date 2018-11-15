@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>高性能Java RPC框架Dubbo与zookeeper的使用 | 萌萌的PP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一. 什么是RPC1. RPC  协议(Remote Procedure Call Protocol)远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC 协议假定某些传输协议的存在，如 TCP 或 UDP，为通信程序之间携带信息数据。在 OSI 网络通信模型中，RPC 跨越了传输层和应用层。RPC 使得开发包括网络分布式程序在内的应用程序更加容易。">
+<meta name="keywords" content="dubbo,zookeeper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高性能Java RPC框架Dubbo与zookeeper的使用">
+<meta property="og:url" content="http://yoursite.com/2018/11/15/高性能Java-RPC框架Dubbo与zookeeper的使用-1/index.html">
+<meta property="og:site_name" content="萌萌的PP">
+<meta property="og:description" content="一. 什么是RPC1. RPC  协议(Remote Procedure Call Protocol)远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC 协议假定某些传输协议的存在，如 TCP 或 UDP，为通信程序之间携带信息数据。在 OSI 网络通信模型中，RPC 跨越了传输层和应用层。RPC 使得开发包括网络分布式程序在内的应用程序更加容易。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106215946155.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106220424377.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106220723297.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106221311682.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106221854691.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106223301935.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106222414120.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106222954442.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106223633447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106224027575.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106224434651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181106225118199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181107111020807.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181107112547214.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181107123401447.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181107123754299.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181107123945404.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181107132024548.png">
+<meta property="og:updated_time" content="2018-11-15T12:49:40.008Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高性能Java RPC框架Dubbo与zookeeper的使用">
+<meta name="twitter:description" content="一. 什么是RPC1. RPC  协议(Remote Procedure Call Protocol)远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC 协议假定某些传输协议的存在，如 TCP 或 UDP，为通信程序之间携带信息数据。在 OSI 网络通信模型中，RPC 跨越了传输层和应用层。RPC 使得开发包括网络分布式程序在内的应用程序更加容易。">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181106215946155.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+  
+    <link rel="alternate" href="/atom.xml" title="萌萌的PP" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/plugin/bganimation/bg.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <div class="widget-wrap mobile-header">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://mmdpp.oss-cn-hangzhou.aliyuncs.com/blog_picture/photo.png?Expires=1542289434&amp;OSSAccessKeyId=TMP.AQG_RpuS4fyqggAxYqW_-DP3rhVICt7iBDnM2SL8sxXGOIE4S99ZyErlUmX1ADAtAhQuet9a6zd-APvmQsTcEovHdxiSSAIVAM-031-ELaXQL220snS3uY_RUT0O&amp;Signature=5LUKd6FkQqv3HA0s92Z7Wj8rmmo%3D">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>13</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>5</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>15</strong><br>标签</div></a>
+    </div>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+        <section id="main"><article id="post-高性能Java-RPC框架Dubbo与zookeeper的使用-1" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/15/高性能Java-RPC框架Dubbo与zookeeper的使用-1/" class="article-date">
+  <time class="post-time" datetime="2018-11-15T12:48:00.000Z" itemprop="datePublished">
+    <span class="post-month">11月</span><br/>
+    <span class="post-day">15</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      高性能Java RPC框架Dubbo与zookeeper的使用
+    </h1>
+  
+
+        <div>
+          
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/分布式服务/">分布式服务</a>
+  </div>
+
+          
+              
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/11/15/高性能Java-RPC框架Dubbo与zookeeper的使用-1/" class="leancloud_visitors" data-flag-title="高性能Java RPC框架Dubbo与zookeeper的使用">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-什么是RPC"><a href="#一-什么是RPC" class="headerlink" title="一. 什么是RPC"></a>一. 什么是RPC</h2><h4 id="1-RPC-协议-Remote-Procedure-Call-Protocol"><a href="#1-RPC-协议-Remote-Procedure-Call-Protocol" class="headerlink" title="1. RPC  协议(Remote Procedure Call Protocol)"></a>1. RPC  协议(Remote Procedure Call Protocol)</h4><p>远程过程调用协议，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC 协议假定某些传输协议的存在，如 TCP 或 UDP，为通信程序之间携带信息数据。在 OSI 网络通信模型中，<strong>RPC 跨越了传输层和应用层</strong>。RPC 使得开发包括网络分布式程序在内的应用程序更加容易。<br>RPC 采用<strong>客户机/服务器模式</strong>。请求程序就是一个客户机，而服务提供程序就是一个服务器。首先，客户机调用进程发送一个有进程参数的调用信息到服务进程，然后等待应答信息。在服务器端，进程保持睡眠状态直到调用信息到达为止。当一个调用信息到达，服务器获得进程参数，计算结果，发送答复信息，然后等待下一个调用信息，最后，客户端调用进程接收答复信息，获得进程结果，然后调用执行继续进行。</p>
+<h4 id="2-RPC-框架"><a href="#2-RPC-框架" class="headerlink" title="2. RPC  框架"></a>2. RPC  框架</h4><p>在单机时代一台电脑运行多个进程，进程之间无法通讯，显然这会浪费很多资源，因此后来出现 IPC(Inter-process communication： 单机中运行的进程之间的相互通信 )，这样就能允许<strong>进程之间进行通讯</strong>，比如在一台计算机中的 A 进程写了一个吃饭的方法，那在以前如果在 B 进程中也要有一个吃饭的方法，必须要在 B 进程中进行创建，但有了 RPC 后 B 只需要调用 A 进程的程序即可完成，再到后来网络时代的出现， 大家电脑都连起来，这时可不可以调用其他电脑上的进程呢，当然可以，这样 RPC 框架就出现了。<br>严格意义上来讲：Unix的生态系统中 RPC 可以在同一台电脑上不同进程进行，也可以在不同电脑上进行；而在windows 里面同一台电脑上不同进程间的通讯还可以采用 LPC(本地访问)。综上：RPC 或 LPC是上层建筑，IPC 是底层基础。<br><strong>RPC 框架有很多：比如 Thrift、dubbo、grpc 等。</strong></p>
+<h4 id="3-RPC-与-HTTP-、TCP-、UDP-、Socket-的区别"><a href="#3-RPC-与-HTTP-、TCP-、UDP-、Socket-的区别" class="headerlink" title="3. RPC 与 HTTP 、TCP 、UDP 、Socket 的区别"></a>3. RPC 与 HTTP 、TCP 、UDP 、Socket 的区别</h4><p>==<strong>TCP/UDP:</strong>== 都是传输协议，主要区别是 tcp 协议连接需要 <strong>3 次握手，断开需要四次挥手</strong>，是通过<strong>流</strong>来传输的，就是确定连接后，一直发送信息，传完后断开。<strong>udp 不需要进行连接</strong>，直接把信息封装成多个报文，直接发送。所以 udp 的<strong>速度更快</strong>写，但是<strong>不保证数据的完整性</strong>。<br>==<strong>HTTP:</strong>== 超文本传输协议是一种应用层协议，建立在 TCP 协议之上<br>==<strong>Socket：</strong>== 是在应用程序层面上对 TCP/IP 协议的封装和应用。其实是一个调用接口，方便程序员使用 TCP/IP 协议栈而已。程序员通过 socket 来使用 tcp/ip 协议。但是 socket 并不是一定要使用 tcp/ip 协议，Socket 编程接口在设计的时候，就希望也能适应其他的网络协议。<br>==<strong>小结：</strong>== 我们把网络传输类比于一条公路，那 TCP/UDP 就是货车，HTTP 就是货物，而 socket就是发动机。<br>RPC 是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。所以 RPC 的实现可以通过不同的协议去实现比如可以使 http、RMI 等。</p>
+<h4 id="4-RPC-的运行流程"><a href="#4-RPC-的运行流程" class="headerlink" title="4. RPC 的运行流程"></a>4. RPC 的运行流程</h4><p><strong>首先，</strong> 要解决通讯的问题，主要是通过在客户端和服务器之间建立 TCP 连接，远程过程调用的所有交换的数据都在这个连接里传输。连接可以是按需连接，调用结束后就断掉，也可以是长连接，多个远程过程调用共享同一个连接。<br><strong>第二，</strong> 要解决寻址的问题，也就是说，A 服务器上的应用怎么告诉底层的 RPC 框架，如何连接到 B 服务器（如主机或 IP 地址）以及特定的端口，方法的名称名称是什么，这样才能完成调用。比如基于Web服务协议栈的RPC，就要提供一个endpoint URI，或者是从UDDI(一种目录服务，通过该目录服务进行服务注册与搜索)服务上查找。如果是 RMI 调用的话，还需要一个 RMI Registry 来注册服务的地址。<br><strong>第三，</strong> 当 A 服务器上的应用发起远程过程调用时，方法的参数需要通过底层的网络协议如 TCP 传递到 B 服务器，由于网络协议是基于二进制的，内存中的参数的值要序列化成二进制的形式，也就是序列化（Serialize）或编组（marshal），通过寻址和传输将序列化的二进制发送给 B 服务器。<br><strong>第四，</strong> B 服务器收到请求后，需要对参数进行反序列化（序列化的逆操作），恢复为内存中的表达方式，然后找到对应的方法（寻址的一部分）进行本地调用，然后得到返回值。<br><strong>第五，</strong> 返回值还要发送回服务器 A 上的应用，也要经过序列化的方式发送，服务器 A 接到后，再反序列化，恢复为内存中的表达方式，交给 A 服务器上的应用<br><img src="https://img-blog.csdnimg.cn/20181106215946155.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>JAVAEE 里面的 stub 是为屏蔽客户调用远程主机上的对象，必须提供某种方式来模拟本地对象,这种本地对象称为<strong>存根(stub),</strong> 存根负责接收本地方法调用,并将它们委派给各自的具体实现对象<br><strong>Skeleton：服务器的骨架</strong></p>
+<h4 id="5-RPC-基于RMI的简单实现"><a href="#5-RPC-基于RMI的简单实现" class="headerlink" title="5. RPC  基于RMI的简单实现"></a>5. RPC  基于RMI的简单实现</h4><h5 id="5-1-首先建一个多模块的maven项目-结构如下"><a href="#5-1-首先建一个多模块的maven项目-结构如下" class="headerlink" title="5-1 首先建一个多模块的maven项目, 结构如下:"></a>5-1 首先建一个多模块的maven项目, 结构如下:</h5><p><img src="https://img-blog.csdnimg.cn/20181106220424377.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="父工程包含三个子模块"></p>
+<h5 id="5-2-rpc-rmi-api模块实现-就是提供调用的接口-结构图如下"><a href="#5-2-rpc-rmi-api模块实现-就是提供调用的接口-结构图如下" class="headerlink" title="5-2 rpc_rmi_api模块实现, 就是提供调用的接口, 结构图如下:"></a>5-2 rpc_rmi_api模块实现, 就是提供调用的接口, 结构图如下:</h5><p><img src="https://img-blog.csdnimg.cn/20181106220723297.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h6 id="User类-必须实现序列化接口"><a href="#User类-必须实现序列化接口" class="headerlink" title="User类:(必须实现序列化接口)"></a>User类:(必须实现序列化接口)</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">6290816946970912418L</span>;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    <span class="keyword">private</span> String userPwd;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(Integer id, String userName, String userPwd)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.userName = userName;</span><br><span class="line">        <span class="keyword">this</span>.userPwd = userPwd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"User&#123;"</span> +</span><br><span class="line">                <span class="string">"id="</span> + id +</span><br><span class="line">                <span class="string">", userName='"</span> + userName + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", userPwd='"</span> + userPwd + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">getSerialVersionUID</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> serialVersionUID;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUserName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserName</span><span class="params">(String userName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.userName = userName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUserPwd</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userPwd;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserPwd</span><span class="params">(String userPwd)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.userPwd = userPwd;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="UserService接口-相关规定看注释"><a href="#UserService接口-相关规定看注释" class="headerlink" title="UserService接口:(相关规定看注释)"></a>UserService接口:(相关规定看注释)</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserService</span> <span class="keyword">extends</span> <span class="title">Remote</span> </span>&#123; <span class="comment">//规定继承Remote父类</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">queryUserById</span><span class="params">(Integer userId)</span> <span class="keyword">throws</span> RemoteException</span>; <span class="comment">//规定抛出异常</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="5-3-rpc-rmi-provider的模块实现-结构图如下-主要提供服务"><a href="#5-3-rpc-rmi-provider的模块实现-结构图如下-主要提供服务" class="headerlink" title="5-3 rpc_rmi_provider的模块实现,结构图如下:(主要提供服务)"></a>5-3 rpc_rmi_provider的模块实现,结构图如下:(主要提供服务)</h5><p><img src="https://img-blog.csdnimg.cn/20181106221311682.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h6 id="UserServiceImp类实现-要继承UnicastRemoteObject-类-规定的"><a href="#UserServiceImp类实现-要继承UnicastRemoteObject-类-规定的" class="headerlink" title="UserServiceImp类实现: (要继承UnicastRemoteObject 类,规定的)"></a>UserServiceImp类实现: (要继承UnicastRemoteObject 类,规定的)</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImp</span> <span class="keyword">extends</span> <span class="title">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;Integer, User&gt; users = <span class="keyword">new</span> HashMap&lt;Integer, User&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserServiceImp</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException</span>&#123;</span><br><span class="line"></span><br><span class="line">        users.put(<span class="number">1</span>,<span class="keyword">new</span> User(<span class="number">1</span>,<span class="string">"admin"</span>,<span class="string">"123456"</span>));</span><br><span class="line">        users.put(<span class="number">2</span>,<span class="keyword">new</span> User(<span class="number">2</span>,<span class="string">"shsxt"</span>,<span class="string">"123456"</span>));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">queryUserById</span><span class="params">(Integer userId)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> users.get(userId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="Publisher类的实现-发布服务端"><a href="#Publisher类的实现-发布服务端" class="headerlink" title="Publisher类的实现:(发布服务端)"></a>Publisher类的实现:(发布服务端)</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Publisher</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> RemoteException, AlreadyBoundException, MalformedURLException </span>&#123;</span><br><span class="line">        <span class="comment">//指定服务端口</span></span><br><span class="line">        LocateRegistry.createRegistry(<span class="number">8989</span>);</span><br><span class="line">        <span class="comment">//发布服务</span></span><br><span class="line">        Naming.bind(<span class="string">"rmi://192.168.1.158:8989/userService"</span>, <span class="keyword">new</span> UserServiceImp());</span><br><span class="line">        </span><br><span class="line">        System.out.println(<span class="string">"成功发布服务!!!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="5-4-rpc-rmi-consumer结构图如下-客户端的调用"><a href="#5-4-rpc-rmi-consumer结构图如下-客户端的调用" class="headerlink" title="5-4 rpc_rmi_consumer结构图如下:(客户端的调用)"></a>5-4 rpc_rmi_consumer结构图如下:(客户端的调用)</h5><p><img src="https://img-blog.csdnimg.cn/20181106221854691.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h6 id="App-类的实现-调用服务端"><a href="#App-类的实现-调用服务端" class="headerlink" title="App 类的实现:(调用服务端)"></a>App 类的实现:(调用服务端)</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span> <span class="keyword">throws</span> RemoteException, NotBoundException, MalformedURLException </span>&#123;</span><br><span class="line">        UserService userService = (UserService) Naming.lookup(<span class="string">"rmi://192.168.1.158:8989/userService"</span>);</span><br><span class="line">        System.out.println(userService.queryUserById(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结果:</strong><br><img src="https://img-blog.csdnimg.cn/20181106223301935.png" alt="在这里插入图片描述"></p>
+<h2 id="二-Dubbo框架"><a href="#二-Dubbo框架" class="headerlink" title="二. Dubbo框架"></a>二. Dubbo框架</h2><h4 id="1-框架基本概念"><a href="#1-框架基本概念" class="headerlink" title="1. 框架基本概念"></a>1. 框架基本概念</h4><p><strong>官网: <a href="http://dubbo.apache.org/en-us/" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/</a></strong><br><strong>A high performance Java RPC framework —-一个高效的远程调用框架</strong><br><img src="https://img-blog.csdnimg.cn/20181106222414120.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>Dubbo 是由阿里巴巴开源的一个高性能、基于 Java 开源的远程调用框架。正如在许多RPC 系统中一样，dubbo 是基于定义服务的概念，指定可以通过参数和返回类型远程调用的方法。在服务器端，服务器实现这个接口，并运行一个 dubbo 服务器来处理客户端调用。在客户端，客户机有一个存根，它提供与服务器相同的方法。<br>==<strong>dubbo的架构图:</strong>==<br><img src="https://img-blog.csdnimg.cn/20181106222954442.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>Dubbo 提供三个核心功能：基于接口的远程调用、容错和负载均衡，以及服务的自动注<br>册与发现。Dubbo 框架广泛的在阿里巴巴内部使用，以及京东、当当、去哪儿、考拉等都在<br>使用。</p>
+<h4 id="2-Dubbo快速入门"><a href="#2-Dubbo快速入门" class="headerlink" title="2. Dubbo快速入门"></a>2. Dubbo快速入门</h4><p>这里也是从实战出发,搭建一个简单的远程调用小实例,  首先也是要创建一个maven的多模块项目, 结果图如下:<br><img src="https://img-blog.csdnimg.cn/20181106223633447.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>下面来一个模块一个模块的列出来:</p>
+<h5 id="2-1-dubbo-api-模块的结构图如下-也是提供方法调用接口"><a href="#2-1-dubbo-api-模块的结构图如下-也是提供方法调用接口" class="headerlink" title="2-1 dubbo_api 模块的结构图如下:(也是提供方法调用接口)"></a>2-1 dubbo_api 模块的结构图如下:(也是提供方法调用接口)</h5><p><img src="https://img-blog.csdnimg.cn/20181106224027575.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>大家不用像我建的那么深,我的错误; 里面的User与UserService与上面的rmi一样;</p>
+<h5 id="2-2-dubbo-provider的结构图如下"><a href="#2-2-dubbo-provider的结构图如下" class="headerlink" title="2-2 dubbo_provider的结构图如下:"></a>2-2 dubbo_provider的结构图如下:</h5><p><img src="https://img-blog.csdnimg.cn/20181106224434651.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h6 id="UserServiceImp类的实现-与上面不一样的是不用继承那个鬼类啦"><a href="#UserServiceImp类的实现-与上面不一样的是不用继承那个鬼类啦" class="headerlink" title="UserServiceImp类的实现:(与上面不一样的是不用继承那个鬼类啦!)"></a>UserServiceImp类的实现:(与上面不一样的是不用继承那个鬼类啦!)</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImp</span> <span class="keyword">implements</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;Integer, User&gt; users = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserServiceImp</span><span class="params">()</span></span>&#123;</span><br><span class="line">        users.put(<span class="number">1</span>,<span class="keyword">new</span> User(<span class="number">1</span>,<span class="string">"admin"</span>,<span class="string">"123456"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">queryUserById</span><span class="params">(Integer userId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> users.get(userId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="Publisher类的实现-与上面完全不同"><a href="#Publisher类的实现-与上面完全不同" class="headerlink" title="Publisher类的实现,与上面完全不同:"></a>Publisher类的实现,与上面完全不同:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Publisher</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        ClassPathXmlApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"provider.xml"</span>);</span><br><span class="line">        context.start();</span><br><span class="line">        System.out.println(<span class="string">"服务发布成功!!!"</span>);</span><br><span class="line">        System.in.read(); <span class="comment">//按任意键退出</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="配置文件provider-xml的实现"><a href="#配置文件provider-xml的实现" class="headerlink" title="配置文件provider.xml的实现"></a>配置文件provider.xml的实现</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">       xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">       xmlns:dubbo=<span class="string">"http://code.alibabatech.com/schema/dubbo"</span></span><br><span class="line">       xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span></span><br><span class="line">       xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span></span><br><span class="line"><span class="string">       http://www.springframework.org/schema/beans/spring-beans.xsd</span></span><br><span class="line"><span class="string">       http://code.alibabatech.com/schema/dubbo</span></span><br><span class="line"><span class="string">       http://code.alibabatech.com/schema/dubbo/dubbo.xsd</span></span><br><span class="line"><span class="string">       http://www.springframework.org/schema/context</span></span><br><span class="line"><span class="string">       http://www.springframework.org/schema/context/spring-context.xsd"</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;context:component-scan base-<span class="keyword">package</span>=<span class="string">"com.shsxt.provider"</span>/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--</span><br><span class="line">        dubbo 环境配置</span><br><span class="line">    --&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--应用名称--&gt;</span><br><span class="line">    &lt;dubbo:application name="dubbo_provider"&gt;&lt;/dubbo:application&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--注册中心配置:广播地址--&gt;</span><br><span class="line">    &lt;dubbo:registry address="multicast://224.5.6.7:1234"&gt;&lt;/dubbo:registry&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--指定公布的服务使用的协议与端口号--&gt;</span><br><span class="line">    &lt;dubbo:protocol name="dubbo" port="20880"&gt;&lt;/dubbo:protocol&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--配置公布的服务--&gt;</span><br><span class="line">    &lt;dubbo:service interface="com.shsxt.api.service.UserService" ref="userServiceImp"&gt;&lt;/dubbo:service&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="2-3-dubbo-consumer-模块买的实现-结构图如下"><a href="#2-3-dubbo-consumer-模块买的实现-结构图如下" class="headerlink" title="2-3 dubbo_consumer 模块买的实现, 结构图如下:"></a>2-3 dubbo_consumer 模块买的实现, 结构图如下:</h5><p><img src="https://img-blog.csdnimg.cn/20181106225118199.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h6 id="UserController类的实现"><a href="#UserController类的实现" class="headerlink" title="UserController类的实现"></a>UserController类的实现</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">queryUserById</span><span class="params">(Integer userId)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userService.queryUserById(userId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="App类的实现"><a href="#App类的实现" class="headerlink" title="App类的实现"></a>App类的实现</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">( String[] args )</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"consumer.xml"</span>);</span><br><span class="line">        UserController userController = (UserController) context.getBean(<span class="string">"userController"</span>);</span><br><span class="line">        </span><br><span class="line">        System.out.println(userController.queryUserById(<span class="number">1</span>));</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="配置文件consumer-xml的代码-注意与provider-xml比较一下区别"><a href="#配置文件consumer-xml的代码-注意与provider-xml比较一下区别" class="headerlink" title="配置文件consumer.xml的代码(注意与provider.xml比较一下区别)"></a>配置文件consumer.xml的代码(注意与provider.xml比较一下区别)</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">       xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">       xmlns:dubbo=<span class="string">"http://code.alibabatech.com/schema/dubbo"</span></span><br><span class="line">       xmlns:context=<span class="string">"http://www.springframework.org/schema/context"</span></span><br><span class="line">       xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span></span><br><span class="line"><span class="string">       http://www.springframework.org/schema/beans/spring-beans.xsd</span></span><br><span class="line"><span class="string">       http://code.alibabatech.com/schema/dubbo</span></span><br><span class="line"><span class="string">       http://code.alibabatech.com/schema/dubbo/dubbo.xsd</span></span><br><span class="line"><span class="string">       http://www.springframework.org/schema/context</span></span><br><span class="line"><span class="string">       http://www.springframework.org/schema/context/spring-context.xsd"</span>&gt;</span><br><span class="line">    &lt;context:component-scan base-<span class="keyword">package</span>=<span class="string">"com.shsxt.consumer"</span>/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--</span><br><span class="line">       dubbo 环境配置</span><br><span class="line">    --&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--配置应用名称--&gt;</span><br><span class="line">    &lt;dubbo:application name="dubbo_consumer"&gt;&lt;/dubbo:application&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--指定注册中心--&gt;</span><br><span class="line">   &lt;dubbo:registry address="multicast://224.5.6.7:1234"&gt;&lt;/dubbo:registry&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!--配置订阅的服务列表--&gt;</span><br><span class="line">    &lt;dubbo:reference id="userService" interface="com.shsxt.api.service.UserService"&gt;&lt;/dubbo:reference&gt;</span><br><span class="line"></span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="2-4-最后在主项目的pom-xml中加入下面依赖-主项目中有单元测试-其他三个子模块的单元测试可以删除掉"><a href="#2-4-最后在主项目的pom-xml中加入下面依赖-主项目中有单元测试-其他三个子模块的单元测试可以删除掉" class="headerlink" title="2-4 最后在主项目的pom.xml中加入下面依赖:(主项目中有单元测试,其他三个子模块的单元测试可以删除掉)"></a>2-4 最后在主项目的pom.xml中加入下面依赖:(主项目中有单元测试,其他三个子模块的单元测试可以删除掉)</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">           &lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">           &lt;version&gt;4.12&lt;/version&gt;</span><br><span class="line">           &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">       &lt;/dependency&gt;</span><br><span class="line">       &lt;!--引入dubbo依赖--&gt;</span><br><span class="line">       &lt;dependency&gt;</span><br><span class="line">           &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">           &lt;artifactId&gt;dubbo&lt;/artifactId&gt;</span><br><span class="line">           &lt;version&gt;2.5.6&lt;/version&gt;</span><br><span class="line">       &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="三-几种重要配置的介绍"><a href="#三-几种重要配置的介绍" class="headerlink" title="三. 几种重要配置的介绍"></a>三. 几种重要配置的介绍</h2><h4 id="1-dubbo-application"><a href="#1-dubbo-application" class="headerlink" title="1. dubbo:application"></a>1. dubbo:application</h4><p><strong>应⽤信息配置。对应的配置类:com.alibaba.dubbo.config.ApplicationConfig</strong>,下面是官网的大致配置介绍,详细介绍直接去官网查看: <a href="http://dubbo.apache.org/en-us/docs/user/references/xml/dubbo-service.html" target="_blank" rel="noopener">http://dubbo.apache.org/en-us/docs/user/references/xml/dubbo-service.html</a><br><img src="https://img-blog.csdnimg.cn/20181107111020807.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">	标签					目的										介绍</span><br><span class="line">dubbo:service	     服务出口	  		 用于导出服务，定义服务元数据，使用多个协议导出服务，向多个注册表注册服务</span><br><span class="line">dubbo:reference	 	 服务参考	 		 用于创建远程代理，订阅多个注册表</span><br><span class="line">dubbo:protocol	     协议配置	  		 在供应商方面配置服务协议，消费者方面如下。</span><br><span class="line">dubbo:application	 应用程序配置	 		 适用于提供者和消费者。</span><br><span class="line">dubbo:module	     模块配置    	  	 可选的。</span><br><span class="line">dubbo:registry		 注册中心			 注册表信息：地址，协议等</span><br><span class="line">dubbo:monitor		 监控中心			 监控信息：地址，地址等。可选。</span><br><span class="line">dubbo:provider		 提供商的默认配置		 ServiceConfigs的默认配置。可选的。</span><br><span class="line">dubbo:consumer	 	 消费者的默认配置	 	 ReferenceConfigs的默认配置。可选的。</span><br><span class="line">dubbo:method		 方法级别配置			 ServiceConfig和ReferenceConfig的方法级别配置。</span><br><span class="line">dubbo:argument	 	 参数配置			 用于指定方法参数配置。</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-dubbo-registry"><a href="#2-dubbo-registry" class="headerlink" title="2. dubbo:registry"></a>2. dubbo:registry</h4><p>注册中⼼配置。对应的配置类： com.alibaba.dubbo.config.RegistryConfig。同时如果有多个不 同的注册 中⼼, 可以声 明多个 <a href="dubbo:registry" target="_blank" rel="noopener">dubbo:registry</a> 标签 ,并在 <a href="dubbo:service" target="_blank" rel="noopener">dubbo:service</a> 或<a href="dubbo:reference" target="_blank" rel="noopener">dubbo:reference</a> 的 registry 属性指定使⽤的注册⼼。</p>
+<h4 id="3-dubbo-protocol"><a href="#3-dubbo-protocol" class="headerlink" title="3. dubbo:protocol"></a>3. dubbo:protocol</h4><p>服务提供者协议配置。对应的配置类:com.alibaba.dubbo.config.ProtocolConfig,同时， 如果需要⽀持多协议， 可以声明多个 <a href="dubbo:protocol" target="_blank" rel="noopener">dubbo:protocol</a> 标签， 并在 <a href="dubbo:service" target="_blank" rel="noopener">dubbo:service</a> 中通过protocol 属性指定使⽤的协议</p>
+<h4 id="4-dubbo-service"><a href="#4-dubbo-service" class="headerlink" title="4. dubbo:service"></a>4. dubbo:service</h4><p>服务提供者暴露服务配置。对应的配置类:com.alibaba.dubbo.config.ServiceConfig</p>
+<h4 id="5-dubbo-reference"><a href="#5-dubbo-reference" class="headerlink" title="5. dubbo:reference"></a>5. dubbo:reference</h4><p>服务消费者引⽤服务配置。对应的配置类： com.alibaba.dubbo.config.ReferenceConfig</p>
+<h2 id="四-zookeeper安装与注册中心配置"><a href="#四-zookeeper安装与注册中心配置" class="headerlink" title="四. zookeeper安装与注册中心配置"></a>四. zookeeper安装与注册中心配置</h2><p><img src="https://img-blog.csdnimg.cn/20181107112547214.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>上面为zookeeper的主要工作结构图</p>
+<h5 id="流程说明"><a href="#流程说明" class="headerlink" title="流程说明:"></a>流程说明:</h5><ul>
+<li>服务提供者启动时: 向/dubbo/com.foo.BarService/providers 目录下写入自己的 URL 地址</li>
+<li>服务消费者启动时: 订阅  /dubbo/com.foo.BarService/providers 目录下的提供者 URL 地址。并向 /dubbo/com.foo.BarService/consumers 目录下写入自己的URL 地址</li>
+<li>监控中心启动时: 订阅  /dubbo/com.foo.BarService 目录下的所有提供者和消费者 URL 地址。<h5 id="支持以下功能："><a href="#支持以下功能：" class="headerlink" title="支持以下功能："></a>支持以下功能：</h5></li>
+<li>当提供者出现断电等异常停机时，注册中心能自动删除提供者信息</li>
+<li>当注册中心重启时，能自动恢复注册数据，以及订阅请求</li>
+<li>当会话过期时，能自动恢复注册数据，以及订阅请求</li>
+<li>当设置  &lt;dubbo:registry check=”false” /&gt; 时，记录失败注册和订阅请求，后台定时重试</li>
+<li>可 通 过  &lt;dubbo:registry username=”admin” password=”1234” /&gt; 设 置zookeeper 登录信息</li>
+<li>可通过  &lt;dubbo:registry group=”dubbo” /&gt; 设置 zookeeper 的根节点，不设置将使用无根树</li>
+<li><p>支持  <em> 号通配符  &lt;dubbo:reference group=”</em>“ version=”*” /&gt; ，可订阅服务的所有分组和所有版本的提供者</p>
+<h4 id="1-zookeeper的下载及安装-linux环境"><a href="#1-zookeeper的下载及安装-linux环境" class="headerlink" title="1. zookeeper的下载及安装(linux环境)"></a>1. zookeeper的下载及安装(linux环境)</h4><p>为啥是linux呢? 简单+不卡啊!</p>
+<h5 id="1-1-下载"><a href="#1-1-下载" class="headerlink" title="1-1 下载"></a>1-1 下载</h5><p> 在你认为合适的位置建一个文件夹: mkdir + 文件夹名<br> 进入该目录进行下载操作:  wget  <a href="http://mirrors.hust.edu.cn/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz" target="_blank" rel="noopener">http://mirrors.hust.edu.cn/apache/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz</a></p>
+<h5 id="1-2-解压"><a href="#1-2-解压" class="headerlink" title="1-2 解压"></a>1-2 解压</h5><p> tar  -zvxf  + 你要解压的压缩包<br>解压完成后的目录结构<br><img src="https://img-blog.csdnimg.cn/20181107123401447.png" alt="在这里插入图片描述"></p>
+<h5 id="1-3-启动前的热身运动"><a href="#1-3-启动前的热身运动" class="headerlink" title="1-3 启动前的热身运动"></a>1-3 启动前的热身运动</h5><p>如果你直接去bin目录启动zookeeper服务器的话会报错, 错误为:不能在conf中找到zoo.cfg这个配置文件, 因为一开始conf里面只有一个zoo_sample_cfg , 所以我们先在conf目录下赋值一份, 名为zoo.cfg</p>
+<p> cp  zoo_sample_cfg  zoo.cfg<br><img src="https://img-blog.csdnimg.cn/20181107123754299.png" alt="在这里插入图片描述"></p>
+<p> 用vim命令打开zoo.cfg文件,  vim zoo.cfg  内容如下:<br><img src="https://img-blog.csdnimg.cn/20181107123945404.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>每个配置对应的解释详细也能看懂,就不介绍了,可以不用改就可以跑去bin目录下启动啦!</p>
+<h5 id="1-4-正式启动-bin目录下"><a href="#1-4-正式启动-bin目录下" class="headerlink" title="1-4 正式启动(bin目录下)"></a>1-4 正式启动(bin目录下)</h5><p>  ./zkServer.sh start  (注意是要加start的) 启动服务端<br> ./zkCli.sh  为启动客户端</p>
+<h4 id="2-对应的java配置"><a href="#2-对应的java配置" class="headerlink" title="2. 对应的java配置"></a>2. 对应的java配置</h4><h5 id="2-1-在-provider和consumer-中增加-zookeeper-客户端-jar-包依赖："><a href="#2-1-在-provider和consumer-中增加-zookeeper-客户端-jar-包依赖：" class="headerlink" title="2-1 在 provider和consumer 中增加 zookeeper 客户端 jar 包依赖："></a>2-1 在 provider和consumer 中增加 zookeeper 客户端 jar 包依赖：</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--zookeeper配置--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.apache.zookeeper&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;zookeeper&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;3.3.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;!--zkclient客户端--&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.github.sgroschupf&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;zkclient&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;0.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>上面使用了zkclient客户端连接,除了这个还可以使用curator客户端连接, 相应的依赖为:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.netflix.curator&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;curator-framework&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.1.10&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<h5 id="2-2-Zookeeper-单机配置"><a href="#2-2-Zookeeper-单机配置" class="headerlink" title="2-2 Zookeeper 单机配置"></a>2-2 Zookeeper 单机配置</h5><p>就是改对应的provider与consumer模块的xml配置即可<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry address=<span class="string">"zookeeper://10.20.153.10:2181"</span> /&gt;</span><br><span class="line">&lt;dubbo:registry protocol=<span class="string">"zookeeper"</span> address=<span class="string">"10.20.153.10:2181"</span> /&gt;</span><br></pre></td></tr></table></figure></p>
+<h5 id="2-3-Zookeeper-集群配置"><a href="#2-3-Zookeeper-集群配置" class="headerlink" title="2-3 Zookeeper  集群配置"></a>2-3 Zookeeper  集群配置</h5><p>不同的ip用逗号隔开<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry address=<span class="string">"zookeeper://10.20.153.10:2181?backup=10.20.153.11:2181,10.20.153.12:2181"</span> /&gt;</span><br><span class="line">&lt;dubbo:registry protocol=<span class="string">"zookeeper"</span> address=<span class="string">"10.20.153.10:2181,10.20.153.11:2181,10.20.153.12:2181"</span> /&gt;</span><br></pre></td></tr></table></figure></p>
+<h5 id="2-4-同一-Zookeeper分成多组注册中心"><a href="#2-4-同一-Zookeeper分成多组注册中心" class="headerlink" title="2-4 同一 Zookeeper分成多组注册中心"></a>2-4 同一 Zookeeper分成多组注册中心</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry id=<span class="string">"chinaRegistry"</span> protocol=<span class="string">"zookeeper"</span> address=<span class="string">"10.20.153.10:2181"</span> group=<span class="string">"china"</span> /&gt;</span><br><span class="line">&lt;dubbo:registry id=<span class="string">"intlRegistry"</span> protocol=<span class="string">"zookeeper"</span> address=<span class="string">"10.20.153.10:2181"</span> group=<span class="string">"intl"</span> /&gt;</span><br></pre></td></tr></table></figure>
+<p>我们上面的为单机版的就行,然后启动java里面的服务端与客户程序的代码就行了, 因为zookeeper管理dubbo为树形结构,使用可以查看注册中心的服务情况, 如下用ls 命令查看就行, 查看根节点为: </p>
+<pre><code>ls /dubbo  (记得前面加/) 想查看哪一级的进哪一级查看就行
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181107132024548.png" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/15/高性能Java-RPC框架Dubbo与zookeeper的使用-1/" data-id="cjoilcdi3001fkwu7wf9povbw" class="article-share-link">分享</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/15/基于java的容器底层原理实现/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          基于java的容器底层原理实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/15/redis基本概念与操作/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">redis基本概念与操作</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <h1 class="blog-title">萌萌的PP</h1>
+    <h2 class="blog-subtitle">帅哥美女们 , 快来一起码代码啊!!!</h2>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://mmdpp.oss-cn-hangzhou.aliyuncs.com/blog_picture/photo.png?Expires=1542289434&amp;OSSAccessKeyId=TMP.AQG_RpuS4fyqggAxYqW_-DP3rhVICt7iBDnM2SL8sxXGOIE4S99ZyErlUmX1ADAtAhQuet9a6zd-APvmQsTcEovHdxiSSAIVAM-031-ELaXQL220snS3uY_RUT0O&amp;Signature=5LUKd6FkQqv3HA0s92Z7Wj8rmmo%3D">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>13</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>5</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>15</strong><br>标签</div></a>
+    </div>
+
+
+
+    <div class="social-link">
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong" target="_blank" title="Github">
+          Github
+        </a>
+      
+        <a class="hvr-bounce-in" href="https://blog.csdn.net/qq_38982845" target="_blank" title="CSDN">
+          CSDN
+        </a>
+      
+    </div>
+
+    <div class="friend-link">
+      <h2>友情链接</h2>
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong/fly-tong.github.io" target="_blank" title="blog home">
+          blog home
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy;2017 - 2018 Mr Tong<br>
+      由<a href="http://hexo.io/" target="_blank">Hexo</a>强力驱动 | 
+      主题-<a href="https://github.com/ShanaMaid/hexo-theme-shana">Shana</a>
+      
+    </div>
+    
+  </div>
+</footer>
+    </div>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/wow/0.1.6/wow.min.js"></script>
+<script>
+new WOW().init();
+</script>   
+
+
+  <link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+  <script src="/plugin/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <link rel="stylesheet" href="/plugin/galmenu/GalMenu.css">
+  <script src="/plugin/galmenu/GalMenu.js"></script>
+  <div class="GalMenu GalDropDown">
+      <div class="circle" id="gal">
+        <div class="ring">
+          
+            <a href="/archives" title="" class="menuItem">首页</a>
+          
+            <a href="/tags" title="" class="menuItem">标签</a>
+          
+            <a href="/categories" title="" class="menuItem">分类</a>
+          
+            <a href="/archives" title="" class="menuItem">归档</a>
+          
+            <a href="/" title="" class="menuItem">关于</a>
+          
+            <a href="/" title="" class="menuItem">展示</a>
+          
+        </div>
+        
+          <audio id="audio" src="#"></audio>
+        
+      </div> 
+</div>
+<div id="overlay" style="opacity: 1; cursor: pointer;"></div>
+  <script type="text/javascript">var items = document.querySelectorAll('.menuItem');
+    for (var i = 0,
+    l = items.length; i < l; i++) {
+      items[i].style.left = (50 - 35 * Math.cos( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
+      items[i].style.top = (50 + 35 * Math.sin( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%"
+    }</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('body').GalMenu({
+      'menu': 'GalDropDown'
+    })
+  });
+</script>
+
+  <section class="hidden-xs"> 
+  <ul class="cb-slideshow"> 
+    <li><span>苟利</span></li> 
+    <li><span>国家</span></li> 
+    <li><span>生死以</span></li> 
+    <li><span>岂能</span></li> 
+    <li><span>祸福</span></li> 
+    <li><span>趋避之</span></li> 
+  </ul>
+</section>
+<script src="/js/script.js"></script>
+
+
+
+
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.article-title').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>

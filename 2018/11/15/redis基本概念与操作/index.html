@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>redis基本概念与操作 | 萌萌的PP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一.Redis入门中文官网： http://www.redis.cn/1. 什么是Redis呢?Redis 是一个开源软件拥有（ Berkly Software Distribution 许可 ），它是一个 内存数据结构存贮，通常被用于 数据库 ， 缓存 ， 消息代理。 。 它支持： 字符串 ， 哈希 ， 列表 ， 集合 ， 数组集合 ， 位图 ， 高压缩算法以及地图索引等数据结构。Redis 支">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis基本概念与操作">
+<meta property="og:url" content="http://yoursite.com/2018/11/15/redis基本概念与操作/index.html">
+<meta property="og:site_name" content="萌萌的PP">
+<meta property="og:description" content="一.Redis入门中文官网： http://www.redis.cn/1. 什么是Redis呢?Redis 是一个开源软件拥有（ Berkly Software Distribution 许可 ），它是一个 内存数据结构存贮，通常被用于 数据库 ， 缓存 ， 消息代理。 。 它支持： 字符串 ， 哈希 ， 列表 ， 集合 ， 数组集合 ， 位图 ， 高压缩算法以及地图索引等数据结构。Redis 支">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103152513738.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103152531546.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103152817118.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103152830491.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2018110315283825.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103152907411.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103152928140.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103152938787.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103153118977.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103153133653.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103153140205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103153232726.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103153244307.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103153338721.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181103153347150.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181105102739855.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181105102749988.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181105103828831.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181105103856697.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181105103929391.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181105104743999.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2018-11-15T12:48:25.081Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis基本概念与操作">
+<meta name="twitter:description" content="一.Redis入门中文官网： http://www.redis.cn/1. 什么是Redis呢?Redis 是一个开源软件拥有（ Berkly Software Distribution 许可 ），它是一个 内存数据结构存贮，通常被用于 数据库 ， 缓存 ， 消息代理。 。 它支持： 字符串 ， 哈希 ， 列表 ， 集合 ， 数组集合 ， 位图 ， 高压缩算法以及地图索引等数据结构。Redis 支">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181103152513738.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70">
+  
+    <link rel="alternate" href="/atom.xml" title="萌萌的PP" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/plugin/bganimation/bg.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div class="outer">
+        <div class="widget-wrap mobile-header">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://mmdpp.oss-cn-hangzhou.aliyuncs.com/blog_picture/photo.png?Expires=1542289434&amp;OSSAccessKeyId=TMP.AQG_RpuS4fyqggAxYqW_-DP3rhVICt7iBDnM2SL8sxXGOIE4S99ZyErlUmX1ADAtAhQuet9a6zd-APvmQsTcEovHdxiSSAIVAM-031-ELaXQL220snS3uY_RUT0O&amp;Signature=5LUKd6FkQqv3HA0s92Z7Wj8rmmo%3D">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>13</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>5</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>15</strong><br>标签</div></a>
+    </div>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+        <section id="main"><article id="post-redis基本概念与操作" class="wow slideInRight article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/15/redis基本概念与操作/" class="article-date">
+  <time class="post-time" datetime="2018-11-15T12:47:00.000Z" itemprop="datePublished">
+    <span class="post-month">11月</span><br/>
+    <span class="post-day">15</span>
+  </time>
+</a>
+   
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      redis基本概念与操作
+    </h1>
+  
+
+        <div>
+          
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+          
+              
+  &nbsp; | &nbsp;
+  <div class="view-box">
+    <span id="/2018/11/15/redis基本概念与操作/" class="leancloud_visitors" data-flag-title="redis基本概念与操作">
+      &nbsp;阅读次数<span class="leancloud-visitors-count"></span>
+    </span>
+  </div>
+
+
+          
+        </div>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-Redis入门"><a href="#一-Redis入门" class="headerlink" title="一.Redis入门"></a>一.Redis入门</h2><h6 id="中文官网：-http-www-redis-cn"><a href="#中文官网：-http-www-redis-cn" class="headerlink" title="中文官网： http://www.redis.cn/"></a>中文官网： <a href="http://www.redis.cn/" target="_blank" rel="noopener">http://www.redis.cn/</a></h6><h4 id="1-什么是Redis呢"><a href="#1-什么是Redis呢" class="headerlink" title="1. 什么是Redis呢?"></a>1. 什么是Redis呢?</h4><p>Redis 是一个开源软件拥有（ Berkly Software Distribution 许可 ），它是一个 内存数据结构存贮，通常被用于 数据库 ， 缓存 ， 消息代理。 。 它支持： 字符串 ， 哈希 ， 列表 ， 集合 ， 数组集合 ， 位图 ， 高压缩算法以及地图索引等数据结构。Redis 支持集群，lua 脚本，以及  LRU（近期最少使用 Least Recently Used ）淘汰算法，事物以及不同级别的 磁盘持久化，能够提供一个高可用的 Redis Sentinel 的集群方案。<br>==从这段简介中我们应该掌握一下几点：==</p>
+<ol>
+<li>Redis 是把数据存放在内存当中，所以它的运行速度会非常快</li>
+<li>Redis 具有多种数据存储结构  </li>
+<li>Redis  具有持久化的功能Redis  具有持久化的功能</li>
+<li>Redis 上的数据可以设置过期</li>
+<li>Redis 支持集群，而且可以自动切换</li>
+<li>跨平台 支持多种语言客户端</li>
+</ol>
+<p>==Redis 用途：==</p>
+<p>缓存（StackOverFlow），数据库(微博)，消息中间件（队列，微博）, 短信验证等等</p>
+<h4 id="2-Redis的安装"><a href="#2-Redis的安装" class="headerlink" title="2. Redis的安装"></a>2. Redis的安装</h4><p>安装官网参考网址：<a href="http://www.redis.cn/download.html" target="_blank" rel="noopener">http://www.redis.cn/download.html</a><br>安装平台：centos6.7</p>
+<h5 id="2-1-下载并解压"><a href="#2-1-下载并解压" class="headerlink" title="2-1 下载并解压"></a>2-1 下载并解压</h5><pre><code>通过 xshell 建立连接，下载 redis 并执行解压
+通过 wget 命令 下载网络上对应节点资源
+wget  http://download.redis.io/releases/redis-3.2.8.tar.gz
+tar  zvxf  redis-3.2.8.tar.gz
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181103152513738.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181103152531546.png" alt="在这里插入图片描述"></p>
+<h5 id="2-2-解压后执行编译与安装"><a href="#2-2-解压后执行编译与安装" class="headerlink" title="2-2 解压后执行编译与安装"></a>2-2 解压后执行编译与安装</h5><p>注意：执行  make  命令前 果 如果 s centos  没有 c gcc  环境在编译与安装期间会出错原因是没有  gcc  环境造成！过 安装通过 m yum  安装  Gcc</p>
+<pre><code>yum install gcc
+</code></pre><p><img src="https://img-blog.csdnimg.cn/20181103152817118.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181103152830491.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2018110315283825.png" alt="在这里插入图片描述"></p>
+<h5 id="2-3-删除原始解压文件-重新解压文件-并进入加压后文件夹下执行安装"><a href="#2-3-删除原始解压文件-重新解压文件-并进入加压后文件夹下执行安装" class="headerlink" title="2-3 删除原始解压文件 重新解压文件 并进入加压后文件夹下执行安装"></a>2-3 删除原始解压文件 重新解压文件 并进入加压后文件夹下执行安装</h5><p><img src="https://img-blog.csdnimg.cn/20181103152907411.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181103152928140.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181103152938787.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="2-4-启动redis服务"><a href="#2-4-启动redis服务" class="headerlink" title="2-4 启动redis服务"></a>2-4 启动redis服务</h5><p>当 redis 文件被成功编译并安装后，执行 redis 服务启动，对于 redis 服务启动有两种方式    </p>
+<ul>
+<li>==方式一:当前操作窗口启动==（ 此时启动之后当前窗口无法再继续其他操作 !!!）<br><img src="https://img-blog.csdnimg.cn/20181103153118977.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li>==方式二:以后台进程方式启动==<br>以后台进程方式启动 redis ,此时需要修改 redis.conf 配置文件中 daemonize 默认属性 no 修改为 yes 通过 vim 命令打开 redis3.2.8 文件夹下 redis.conf 文件<br>==vim redis.conf==<br><img src="https://img-blog.csdnimg.cn/20181103153133653.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181103153140205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>==修改后保存并退出,  后台启动 redis 服务==<br><img src="https://img-blog.csdnimg.cn/20181103153232726.png" alt="在这里插入图片描述"><br>通过 linux 客户端连接 redis 服务<br>在 src 目录执行命令 ./redis-cli  连接 redis 服务器<br><img src="https://img-blog.csdnimg.cn/20181103153244307.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>至此，redis 环境搭建成功，并可以通过 redis 客户端命令行操作 redis 服务器啦！！！<h4 id="3-key相关指令介绍"><a href="#3-key相关指令介绍" class="headerlink" title="3.key相关指令介绍"></a>3.key相关指令介绍</h4>==<strong>exists key</strong>==  检测指定 key 是否存在，返回 1 表示存在， 0 不存在<br>==<strong>del key1 key2 …… keyN</strong>==  删除给定 key,返回删除 key 的数目， 0 表示给定 key 都不存在<br>==<strong>type key</strong>==  返回给定 key 值的类型。 返回 none 表示 key 不存在,string 字符类型， list 链表类型 set 无序集合类型……<br>==<strong>keys pattern</strong>==  返回匹配指定模式的所有 key<br>==<strong>randomkey</strong>== 返回从当前数据库中随机选择的一个 key,如果当前数据库是空的，返回空串<br>==<strong>rename oldkey newkey</strong>== 重命名一个 key,如果 newkey 存在，将会被覆盖，返回1 表示成功，0 失败。可能是 oldkey 不存在或者和 newkey 相同。<br>==<strong>renamenx oldkey newkey</strong>== 同上，但是如果 newkey 存在返回失败。<br>==<strong>expire key seconds</strong>== 为 key 指定过期时间， 单位是秒。 返回 1 成功， 0 表示key 已经设置过过期时间或者不存在。<br>==<strong>ttl key</strong>== 返回设置过过期时间 key 的剩余过期秒数。 -1 表示 key 不存在或者未设置过期时间。<br>==<strong>select db-index</strong>== 通过索引选择数据库， 默认连接的数据库是 0,默认数据库数是16 个。 返回 1表示成功， 0 失败。<br>==<strong>move key db-index</strong>== 将 key 从当前数据库移动到指定数据库。返回 1 表示成功。0 表示 key不存在或者已经在指定数据库中。<br><img src="https://img-blog.csdnimg.cn/20181103153338721.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181103153347150.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h2 id="二-Redis的五种基本数据类型-重要"><a href="#二-Redis的五种基本数据类型-重要" class="headerlink" title="二.Redis的五种基本数据类型(重要)"></a>二.Redis的五种基本数据类型(重要)</h2><h5 id="redis-提供五种数据类型：-string-hash-list-set-及sorted-set"><a href="#redis-提供五种数据类型：-string-hash-list-set-及sorted-set" class="headerlink" title="==redis 提供五种数据类型： string,hash,list,set 及sorted set=="></a>==redis 提供五种数据类型： string,hash,list,set 及sorted set==</h5><h4 id="1-String-类型"><a href="#1-String-类型" class="headerlink" title="1. String 类型"></a>1. String 类型</h4><h5 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1-1 概述"></a>1-1 概述</h5>string 是最基本的类型，而且 string 类型是二进制安全的。意思是 redis 的string 可以包含任何数据。比如 jpg 图片或者序列化的对象。从内部实现来看其实string 可以看作 byte 组，最大上限是 1G 字节。1G=1024MB<h5 id="1-2-基本操作指令"><a href="#1-2-基本操作指令" class="headerlink" title="1-2 基本操作指令"></a>1-2 基本操作指令</h5></li>
+<li><strong>set key value</strong> 设置 key 对应 string 类型的值， 返回 1 表示成功， 0 失败。</li>
+<li><strong>setnx key value</strong> 如果 key 不存在， 设置 key 对应 string 类型的值。 如果key 已经存在，返回 0。</li>
+<li><strong>get key</strong> 获取 key 对应的 string 值,如果 key 不存在返回 nil</li>
+<li><strong>getset key value</strong> 先获取 key 的值，再设置 key 的值。如果 key 不存在返回 nil。</li>
+<li><strong>mget key1 key2 ……keyN</strong> 一次获取多个 key 的值，如果对应 key 不存在，则对应返回 nil。</li>
+<li><strong>mset key1 value1 ……keyN valueN</strong> 一次设置多个 key 的值，成功返回 1表示所有的值都设置了，失败返回 0 表示没有任何值被设置。</li>
+<li><strong>msetnx key1 value1 ……keyN valueN</strong> 一次设置多个 key 的值，但是不会覆盖已经存在的 key</li>
+<li><strong>incr key</strong> 对 key 的值做++操作， 并返回新的值。 注意 incr 一个不是 int 的value 会返回错误， incr 一个不存在的 key，则设置 key 值为 1。</li>
+<li><strong>decr key</strong> 对 key 的值做–操作， decr 一个不存在 key，则设置 key 值为-1。</li>
+<li><strong>incrby key integer</strong> 对 key 加上指定值 ， key 不存在时候会设置 key，并认为原来的 value 是 0。</li>
+<li><strong>decrby key integer</strong> 对 key 减去指定值。decrby 完全是为了可读性，我们完全可以通过 incrby 一个负值来实现同样效果，反之一样<h5 id="1-3应用场景"><a href="#1-3应用场景" class="headerlink" title="1-3应用场景"></a>1-3应用场景</h5>String 是最常用的一种数据类型，普通的 key/value 存储都可以归为此类，value 其实不仅是 String,也可以是数字：比如想知道什么时候封锁一个 IP 地址(访问超过几次)。INCRBY 命令让这些变得很容易，通过原子递增保持计数。等等…..<h4 id="2-Hash-类型"><a href="#2-Hash-类型" class="headerlink" title="2. Hash 类型"></a>2. Hash 类型</h4><h5 id="2-1-Hash的基本指令操作"><a href="#2-1-Hash的基本指令操作" class="headerlink" title="2-1 Hash的基本指令操作"></a>2-1 Hash的基本指令操作</h5></li>
+<li><strong>hset key field value</strong> 设置 hash field 为指定值，如果 key 不存在，则创建</li>
+<li><strong>hget key field</strong> 获取指定的 hash field。</li>
+<li><strong>hmget key filed1….fieldN</strong> 获取全部指定的 hash filed。</li>
+<li><strong>hmset key filed1 value1 ……filedN valueN</strong> 同时设置hash的多个 field。</li>
+<li><strong>hincrby key field integer</strong> 将指定的 hash filed 加上指定值。成功返回 hashfiled 变更后的值。</li>
+<li><strong>hexists key field</strong> 检测指定 field 是否存在。</li>
+<li><strong>hdel key field</strong> 删除指定的 hash field。</li>
+<li><strong>hlen key</strong> 返回指定 hash 的 field 数量</li>
+<li><strong>hkeys key</strong> 返回 hash 的所有 field。</li>
+<li><strong>hvals key</strong> 返回 hash 的所有 value。</li>
+<li><strong>hgetall  key</strong> 返回 hash 的所有 filed 和 value。<br><img src="https://img-blog.csdnimg.cn/20181105102739855.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181105102749988.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h5 id="2-2-应用场景"><a href="#2-2-应用场景" class="headerlink" title="2-2 应用场景"></a>2-2 应用场景</h5>我们简单举个实例来描述下 Hash 的应用场景，比如我们要存储一个用户信息对象数据，包<br>含以下信息：</li>
+<li><p>用户 ID，为查找的 key，存储的 value 用户对象包含姓名 name，年龄 age，生日 birthday 等信息，如果用普通的 key/value 结构来存储，主要有以下 2 种存储方式：</p>
+<ul>
+<li><p>==第一种方式==将用户ID作为查找key,把其他信息封装成一个对象以序列化的方式存储，<br>如：set u001 “李三,18,20010101”<br>这种方式的缺点是，增加了序列化/反序列化的开销，并且在需要修改其中一项信息时，需要把整个对象取回，并且修改操作需要对并发进行保护，引入 CAS 等复杂问题。</p>
+<ul>
+<li><p>==第二种方法==是这个用户信息对象有多少成员就存成多少个 key-value 对儿，用用户 ID+对应属性的名称作为唯一标识来取得对应属性的值，如：</p>
+<p>mset user:001:name “李三” user:001:age 18<br>user:001:birthday “20010101”</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>虽然省去了序列化开销和并发问题，但是用户 ID 为重复存储，如果存在大量这样的数据，内存浪费还是非常可观的。那么 Redis 提供的 Hash 很好的解决了这个问题，Redis 的 Hash 实际是内部存储的Value 为一个 HashMap，并提供了直接存取这个 Map 成员的接口，    如：</p>
+<pre><code>hmset user:001 name &quot;李三&quot; age 18 birthday &quot;20010101&quot;
+</code></pre><p>也就是说，Key 仍然是用户 ID,value 是一个 Map，这个 Map 的 key 是成员的属性名，value 是属性值，这样对数据的修改和存取都可以直接通过其内部 Map 的 Key(Redis 里称内部 Map 的 key 为 field), 也就是通过key(用户 ID) + field(属性标签) 操作对应属性数据了，既不需要重复存储数据，也不会带来序列化和并发修改控制的问题。很好的解决了问题。这里同时需要注意，Redis 提供了接口(hgetall)可以直接取到全部的属性数据,但是如果内部 Map 的成员很多，那么涉及到遍历整个内部 Map 的操作，由于 Redis 单线程模型的缘故，这个遍历操作可能会比较耗时，而另其它客户端的请求完全不响应，这点需要格外注意。</p>
+</li>
+<li>实现方式：上面已经说到 Redis Hash 对应 Value 内部实际就是一个 HashMap，实际这里会有2 种不同实现，这个 Hash 的成员比较少时 Redis 为了节省内存会采用类似一维数组的方式来紧凑存储，而不会采用真正的 HashMap 结构，对应的 value redisObject 的encoding 为 zipmap,当成员数量增大时会自动转成真正的 HashMap。<h4 id="3-List-类型"><a href="#3-List-类型" class="headerlink" title="3. List 类型"></a>3. List 类型</h4><h5 id="3-1-List的基本操作指令"><a href="#3-1-List的基本操作指令" class="headerlink" title="3-1 List的基本操作指令"></a>3-1 List的基本操作指令</h5></li>
+<li><strong>lpush key string</strong> 在 key 对应 list 的头部添加字符串元素，返回 1 表示成功， 0表示 key 存在且不是 list 类型。</li>
+<li><strong>rpush key string</strong> 在 key 对应 list 的尾部添加字符串元素。</li>
+<li><strong>llen key</strong> 返回 key 对应 list 的长度， 如果 key 不存在返回 0， 如果 key 对应类型不是 list 返回错误。</li>
+<li><strong>lrange key start end</strong> 返回指定区间内的元素， 下标从 0 开始， 负值表示从后面计算， -1 表示倒数第一个元素 ， key 不存在返回空列表。</li>
+<li><strong>ltrim key start end</strong> 截取 list 指定区间内元素，成功返回 1， key 不存在返回错误。</li>
+<li><strong>lset key indexvalue</strong> 设置 list 中指定下标的元素值，成功返回 1， key 或者下标不存在返回错误。</li>
+<li><strong>lrem key count value</strong> 从 List 的头部 （ count 正数）或尾部 （ count 负数）删除一定数量 （ count）匹配 value 的元素，返回删除的元素数量。 count 为 0时候删除全部。<strong>例子:适合删除重复的值如:  1 1 1 1 1 1 1 , lrem test 3 1b这样会删掉3个1</strong></li>
+<li><strong>lpop key</strong> 从 list 的头部删除并返回删除元素。如果 key 对应 list 不存在或者是空返回 nil，如果 key 对应值不是 list 返回错误。</li>
+<li><strong>rpop key</strong> 从 list 的尾部删除并返回删除元素。</li>
+<li><strong>blpop key1 ……keyN timeout</strong> 从左到右扫描，返回对第一个非空 list 进行</li>
+<li><strong>lpop</strong> 操作并返回，比如 blpop list1 list2 list3 0 ,如果 list 不存在 list2,list3 都是非空则对 list2 做 lpop 并返回从 list2 中删除的元素。如果所有的 list 都是空或不存在，则会阻塞 timeout 秒， timeout 为 0 表示一直阻塞。当阻塞时，如果有 client 对 key1…keyN 中的任意 key 进行 push 操作， 则第一在这个 key 上被阻塞的 client 会立即返回。 如果超时发生， 则返回 nil。有点像unix 的 select 或者 poll。</li>
+<li><strong>brpop</strong> 同 blpop，一个是从头部删除一个是从尾部删除<br><img src="https://img-blog.csdnimg.cn/20181105103828831.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20181105103856697.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h5 id="3-2-应用场景"><a href="#3-2-应用场景" class="headerlink" title="3-2 应用场景"></a>3-2 应用场景</h5><img src="https://img-blog.csdnimg.cn/20181105103929391.png" alt="在这里插入图片描述"><br>Lists 的另一个应用就是队列，可以利用 Lists 的 PUSH 操作，将任务存在 List 中，然后工作线程再用 POP 操作将任务取出进行执行。<br>实现方式：<br>Redis list 的实现为一个双向链表，即可以支持反向查找和遍历，更方便操作，不过带来了部分额外的内存开销，Redis 内部的很多实现，包括发送缓冲队列等也都是用的这个数据结构。<h4 id="4-Set-类型"><a href="#4-Set-类型" class="headerlink" title="4. Set 类型"></a>4. Set 类型</h4><h5 id="4-1-概述"><a href="#4-1-概述" class="headerlink" title="4-1 概述"></a>4-1 概述</h5>是<strong>无序集合</strong>，最大可以包含(2 的 32 次方-1)个元素。 set 的是通过 hashtable ( <strong>HashMap: 线程不安全，效率高. 允许 key 或 value 为 null HashTable:线程安全，效率低. 不允许 key 或 value 为 null</strong>)实现的，所以添加， 删除， 查找的复杂度都是 O(1)。 hash table 会随着添加或者删除自动的调整大小。需要注意的是调整 hashtable 大小时候需要同步（获取写锁）会阻塞其他读写操作。可能不久后就会改用跳表（ skip list）来实现。 跳表已经在 sortedsets 中使用了。关于 set 集合类型除了基本的添加删除操作， 其它有用的操作还包含集合的取并集(union)， 交集(intersection)，差集(difference)。通过这些操作可以很容易的实现 SNS 中的<strong>好友推荐</strong>和 blog 的 tag 功能<h5 id="4-2-Set基本操作指令"><a href="#4-2-Set基本操作指令" class="headerlink" title="4-2 Set基本操作指令"></a>4-2 Set基本操作指令</h5></li>
+<li><strong>sadd key member</strong> 添加一个 string 元素到 key 对应 set 集合中，成功返回 1,如果元素以及在集合中则返回 0， key 对应的 set 不存在则返回错误。</li>
+<li><strong>srem key member</strong> 从 key 对应 set 中移除指定元素，成功返回 1，如果 member在集合中不存在或者 key 不存在返回 0，如果 key 对应的不是 set 类型的值返回错误。</li>
+<li><strong>spop key</strong> 删除并返回 key 对应 set 中随机的一个元素,如果 set 是空或者 key不存在返回 nil。</li>
+<li><strong>srandmember key</strong> 同 spop，随机取 set 中的一个元素，但是不删除元素。</li>
+<li><strong>smove srckey dstkey member</strong> 从 srckey 对应 set 中移除 member 并添加到</li>
+<li><strong>stkey</strong> 对应 set 中，整个操作是原子的。 成功返回 1,如果 member 在 srckey 中不存在返回 0， 如果 key 不是 set 类型返回错误。</li>
+<li><strong>scard key</strong> 返回 set 的元素个数，如果 set 是空或者 key 不存在返回 0。</li>
+<li><strong>sismember key member</strong> 判断 member 是否在 set 中，存在返回 1， 0 表示不存在或者 key 不存在。</li>
+<li><strong>sinter key1 key2 …… keyN</strong> 返回所有给定 key 的交集。</li>
+<li><strong>sinterstore dstkey key1 ……. keyN</strong> 返回所有给定 key 的交集， 并保存交集存到 dstkey 下。<strong>(关键词不区分大小写的)</strong></li>
+<li><strong>sunion key1 key2 …… keyN</strong> 返回所有给定 key 的并集。</li>
+<li><strong>sunionstore dstkey key1 ……keyN</strong> 返回所有给定 key 的并集， 并保存并集到 dstkey 下。</li>
+<li><strong>sdiff key1 key2 ……keyN</strong> 返回所有给定 key 的差集。</li>
+<li><strong>sdiffstore dstkey key1 ……keyN</strong> 返回所有给定 key 的差集，并保存差集到 dstkey 下。</li>
+<li><strong>smembers key</strong> 返回 key 对应 set 的所有元素，结果是无序的。<br><img src="https://img-blog.csdnimg.cn/20181105104743999.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4OTgyODQ1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h5 id="4-3-应用场景"><a href="#4-3-应用场景" class="headerlink" title="4-3 应用场景"></a>4-3 应用场景</h5>Redis set 对外提供的功能与 list 类似是一个列表的功能，特殊之处在于 <strong>set 是可以自动排重的</strong>，当你需要存储一个列表数据，又不希望出现重复数据时，set 是一个很好的选择，并且 set 提供了判断某个成员是否在一个 set 集合内的重要接口，这个也是 list所不能提供的。<br>比如在微博应用中，每个人的好友存在一个集合（set）中，这样求两个人的共同好友的操作，可能就只需要用求交集命令即可。 （新浪微博关注<strong>共同好友</strong>）Redis 还为集合提供了求<strong>交集、并集、差集</strong>等操作。<br>实现方式：set 的内部实现是一个 value 永远为 null 的 HashMap，实际就是通过计hash的方式来快速排重的, 这也是set能提供判断一个成员是否在集合内的原因<h4 id="5-Sorted-Set-类型"><a href="#5-Sorted-Set-类型" class="headerlink" title="5. Sorted Set 类型"></a>5. Sorted Set 类型</h4><h5 id="5-1-概述"><a href="#5-1-概述" class="headerlink" title="5-1 概述"></a>5-1 概述</h5>Sorted Set 是有序集合， 它在 set 的基础上增加了一个顺序属性，这一属性在添加修改元素的时候可以指定， 每次指定后， 会自动重新按新的值调整顺序。 可以理解了有两列的 mysql 表，一列存 value，一列存顺序。操作中 key 理解为sorted set 的名字，最多包含 2&gt;32-1 个元素<h5 id="5-2-基本操作指令"><a href="#5-2-基本操作指令" class="headerlink" title="5-2 基本操作指令"></a>5-2 基本操作指令</h5></li>
+<li><strong>zadd key score member</strong> 添加元素到集合，元素在集合中存在则更新对应 score。</li>
+<li><strong>zrem key member</strong> 删除指定元素， 1 表示成功，如果元素不存在返回 0。</li>
+<li><strong>zincrby key incrmember</strong> 增加对应 member 的 score 值， 然后移动元素并保持 skip list 保持有序。返回更新后的 score 值。</li>
+<li><strong>zrank key member</strong> 返回指定元素在集合中的排名（下标）， 集合中元素是按 score从小到大排序的。</li>
+<li><strong>zrevrankkey member</strong> 同上,但是集合中元素是按 score 从大到小排序。</li>
+<li><strong>zrange key start end</strong> 类似 lrange 操作从集合中去指定区间的元素。返回的是有序结果</li>
+<li><strong>zrevrange key start end</strong> 同上，返回结果是按 score 逆序的。</li>
+<li><strong>zrangebyscore key min max</strong> 返回集合中 score 在给定区间的元素。<strong>(里面的区间为闭区间[])</strong></li>
+<li><strong>zcount key min max</strong> 返回集合中 score 在给定区间的数量。</li>
+<li><strong>zcard key</strong> 返回集合中元素个数。</li>
+<li><p><strong>zscore key element</strong> 返回给定元素对应的 score</p>
+<h5 id="5-3-应用场景"><a href="#5-3-应用场景" class="headerlink" title="5-3 应用场景"></a>5-3 应用场景</h5><p>以某个条件为权重，比如按顶的次数排序. ZREVRANGE 命令可以用来按照得分来获取前 100 名的用户，ZRANK 可以用来获取用户排名，非常直接而且操作容易。<br>Redis sorted set 的使用场景与 set 类似，区别是 set 不是自动有序的，而 sortedset 可以通过用户额外提供一个优先级(score)的参数来为成员排序，并且是插入有序的，即自动排序。</p>
+<p>  比如:twitter 的 public timeline 可以以发表时间作为 score 来存储，这样获取时就是自动按时间排好序的。<br>  比如:全班同学成绩的 SortedSets，value 可以是同学的学号，而 score 就可以是其考试得分，这样数据插入集合的，就已经进行了天然的排序。<br>  比如网易云音乐排行榜实现；<br>另外还可以用 Sorted Sets 来做带权重的队列</p>
+<p>  比如普通消息的 score 为 1，重要消息的 score 为 2，然后工作线程可以选择按 score 的倒序来获取工作任务。让重要的任务优先执行。<br>需要精准设定过期时间的应用</p>
+<p>  比如你可以把上面说到的 sorted set 的 score 值设置成过期时间的时间戳，那么就可以简单地通过过期时间排序，定时清除过期数据了，<br>  不仅是清除 Redis 中的过期数据，你完全可以把 Redis 里这个过期时间当成是对数据库中数据的索引，用 Redis 来找出哪些数据<br>  需要过期删除，然后再精准地从数据库中删除相应的记录</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/15/redis基本概念与操作/" data-id="cjoila7cz001ckwu7ebjc8lgp" class="article-share-link">分享</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/15/高性能Java-RPC框架Dubbo与zookeeper的使用-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          高性能Java RPC框架Dubbo与zookeeper的使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/03/全文检索技术Lucene/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">全文检索技术Lucene</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <h1 class="blog-title">萌萌的PP</h1>
+    <h2 class="blog-subtitle">帅哥美女们 , 快来一起码代码啊!!!</h2>
+    <ul class="blog-link">
+     
+          <a href="/" title="Home">
+            <li>主页</li>
+          </a>
+        
+          <a href="/archives" title="Archives">
+            <li>归档</li>
+          </a>
+        
+          <a href="/categories" title="Categories">
+            <li>分类</li>
+          </a>
+        
+          <a href="/tags" title="Tags">
+            <li>标签</li>
+          </a>
+        
+          <a href="/" title="About">
+            <li>关于</li>
+          </a>
+        
+          <a href="/" title="展示">
+            <li>展示</li>
+          </a>
+        
+    </ul>
+  </div>
+</div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title"></h3>
+  <div class="widget">
+    <img class="avatar" src="https://mmdpp.oss-cn-hangzhou.aliyuncs.com/blog_picture/photo.png?Expires=1542289434&amp;OSSAccessKeyId=TMP.AQG_RpuS4fyqggAxYqW_-DP3rhVICt7iBDnM2SL8sxXGOIE4S99ZyErlUmX1ADAtAhQuet9a6zd-APvmQsTcEovHdxiSSAIVAM-031-ELaXQL220snS3uY_RUT0O&amp;Signature=5LUKd6FkQqv3HA0s92Z7Wj8rmmo%3D">
+    <h2 class="author">Mr Tong</h2>
+    <h3 class="description">爱好码代码的小菜鸟啦!!!</h3>
+    <div class="count-box">
+      <a href="/archives"><div><strong>13</strong><br>文章</div></a>
+      <a href="/categories"><div><strong>5</strong><br>分类</div></a>
+      <a href="/tags"><div><strong>15</strong><br>标签</div></a>
+    </div>
+
+
+
+    <div class="social-link">
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong" target="_blank" title="Github">
+          Github
+        </a>
+      
+        <a class="hvr-bounce-in" href="https://blog.csdn.net/qq_38982845" target="_blank" title="CSDN">
+          CSDN
+        </a>
+      
+    </div>
+
+    <div class="friend-link">
+      <h2>友情链接</h2>
+      
+        <a class="hvr-bounce-in" href="https://github.com/fly-tong/fly-tong.github.io" target="_blank" title="blog home">
+          blog home
+        </a>
+      
+    </div>
+  </div>
+</div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy;2017 - 2018 Mr Tong<br>
+      由<a href="http://hexo.io/" target="_blank">Hexo</a>强力驱动 | 
+      主题-<a href="https://github.com/ShanaMaid/hexo-theme-shana">Shana</a>
+      
+    </div>
+    
+  </div>
+</footer>
+    </div>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/wow/0.1.6/wow.min.js"></script>
+<script>
+new WOW().init();
+</script>   
+
+
+  <link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+  <script src="/plugin/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <link rel="stylesheet" href="/plugin/galmenu/GalMenu.css">
+  <script src="/plugin/galmenu/GalMenu.js"></script>
+  <div class="GalMenu GalDropDown">
+      <div class="circle" id="gal">
+        <div class="ring">
+          
+            <a href="/archives" title="" class="menuItem">首页</a>
+          
+            <a href="/tags" title="" class="menuItem">标签</a>
+          
+            <a href="/categories" title="" class="menuItem">分类</a>
+          
+            <a href="/archives" title="" class="menuItem">归档</a>
+          
+            <a href="/" title="" class="menuItem">关于</a>
+          
+            <a href="/" title="" class="menuItem">展示</a>
+          
+        </div>
+        
+          <audio id="audio" src="#"></audio>
+        
+      </div> 
+</div>
+<div id="overlay" style="opacity: 1; cursor: pointer;"></div>
+  <script type="text/javascript">var items = document.querySelectorAll('.menuItem');
+    for (var i = 0,
+    l = items.length; i < l; i++) {
+      items[i].style.left = (50 - 35 * Math.cos( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%";
+      items[i].style.top = (50 + 35 * Math.sin( - 0.5 * Math.PI - 2 * (1 / l) * i * Math.PI)).toFixed(4) + "%"
+    }</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('body').GalMenu({
+      'menu': 'GalDropDown'
+    })
+  });
+</script>
+
+  <section class="hidden-xs"> 
+  <ul class="cb-slideshow"> 
+    <li><span>苟利</span></li> 
+    <li><span>国家</span></li> 
+    <li><span>生死以</span></li> 
+    <li><span>岂能</span></li> 
+    <li><span>祸福</span></li> 
+    <li><span>趋避之</span></li> 
+  </ul>
+</section>
+<script src="/js/script.js"></script>
+
+
+
+
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("", "");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.article-title').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+  </div>
+</body>
+</html>
